@@ -1,0 +1,28 @@
+{
+  "id": "rule-003",
+  "desc": "用户数据同步-多表聚合到单表",
+  "monitor": [
+    {
+      "schema": "test",
+      "table": "t_user",
+      "event": [
+        "insert",
+        "update"
+      ],
+      "field": [
+        "id",
+        "name"
+      ]
+    }
+  ],
+  "fetcher": {
+    "name": "fetch001",
+    "desc": "从mysql获取数据"
+  },
+  "processor": [
+    {
+      "name": "process001",
+      "desc": "向mysql t_user表写数据"
+    }
+  ]
+}
