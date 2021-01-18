@@ -5,7 +5,6 @@ import com.bluesgao.databus.database.JdbcBuilder;
 import com.bluesgao.databus.database.JdbcProps;
 import com.bluesgao.databus.plugin.common.EventType;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
-import com.bluesgao.databus.plugin.fetcher.DataFetcherParam;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
 

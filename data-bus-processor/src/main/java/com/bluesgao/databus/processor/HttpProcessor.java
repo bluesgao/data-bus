@@ -2,7 +2,6 @@ package com.bluesgao.databus.processor;
 
 import com.bluesgao.databus.plugin.common.ModeType;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
-import com.bluesgao.databus.plugin.processor.DataProcessorParam;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import lombok.extern.slf4j.Slf4j;
 
