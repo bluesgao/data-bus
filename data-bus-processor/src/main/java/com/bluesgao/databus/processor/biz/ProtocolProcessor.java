@@ -82,11 +82,15 @@ public class ProtocolProcessor implements DataProcessor {
         int i = 0;
         for (String key : data.keySet()) {
             Object value = data.get(key);
-            sql.append(key);
-            values.append("'" + value + "'");
-            if (i < data.keySet().size() - 1) {
-                sql.append(",");
-                values.append(",");
+            if (value != null) {
+                sql.append(key);
+                values.append("'" + value + "'");
+                //values.append(value);
+
+                if (i < data.keySet().size() - 1) {
+                    sql.append(", ");
+                    values.append(", ");
+                }
             }
             i++;
         }
@@ -99,11 +103,15 @@ public class ProtocolProcessor implements DataProcessor {
         sql.append(" ON DUPLICATE KEY UPDATE ");
         for (String key : data.keySet()) {
             Object value = data.get(key);
-            sql.append(key);
-            sql.append(" = ");
-            sql.append("'" + value + "'");
-            if (j < data.keySet().size() - 1) {
-                sql.append(" , ");
+            if (value != null) {
+                sql.append(key);
+                sql.append(" = ");
+                sql.append("'" + value + "'");
+                //sql.append(value);
+
+                if (j < data.keySet().size() - 1) {
+                    sql.append(" , ");
+                }
             }
             j++;
         }
