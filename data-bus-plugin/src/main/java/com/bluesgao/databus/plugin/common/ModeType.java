@@ -2,7 +2,7 @@ package com.bluesgao.databus.plugin.common;
 
 public enum ModeType {
 
-    BINLOG("BINLOG", "binlog"),
+    HTTP("HTTP", "http"),
     SQL("SQL", "sql");
 
     private String type;

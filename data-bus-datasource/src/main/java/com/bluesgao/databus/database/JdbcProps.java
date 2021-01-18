@@ -26,4 +26,8 @@ public class JdbcProps {
      * mysql驱动
      */
     private String driverClassName;
+
+    private String table;
+
+    private String sql;
 }

@@ -1,1 +1,3 @@
-com.bluesgao.databus.fetcher.ProtocolFetcher
+com.bluesgao.databus.fetcher.HttpFetcher
+com.bluesgao.databus.fetcher.SqlFetcher
+com.bluesgao.databus.fetcher.custom.ProtocolFetcher

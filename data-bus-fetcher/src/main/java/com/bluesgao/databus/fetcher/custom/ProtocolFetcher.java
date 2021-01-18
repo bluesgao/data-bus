@@ -1,17 +1,17 @@
-package com.bluesgao.databus.fetcher;
+package com.bluesgao.databus.fetcher.custom;
 
 import com.alibaba.druid.util.JdbcUtils;
 import com.bluesgao.databus.database.JdbcBuilder;
 import com.bluesgao.databus.database.JdbcProps;
 import com.bluesgao.databus.plugin.common.EventType;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
+import com.bluesgao.databus.plugin.fetcher.DataFetcherParam;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,18 +24,9 @@ import java.util.Map;
 @Slf4j
 public class ProtocolFetcher implements DataFetcher {
 
-    public static void main(String[] args) {
-        ProtocolFetcher protocolFetcher = new ProtocolFetcher();
-        Map<String, Object> data = new HashMap<>(8);
-        data.put("protocol_id", "215165519539209204");
-        protocolFetcher.fetch(null, "update", data);
-
-        System.out.println(protocolFetcher.getName());
-    }
-
     @Override
-    public DataFetcherResult fetch(Map<String, String> params, String event, Map<String, Object> data) {
-        //初始化数据源
+    public DataFetcherResult fetch(DataFetcherParam params, String event, Map<String, Object> data) {
+//初始化数据源
         /**
          *       "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
          *       "driverClassName": "com.mysql.jdbc.Driver",

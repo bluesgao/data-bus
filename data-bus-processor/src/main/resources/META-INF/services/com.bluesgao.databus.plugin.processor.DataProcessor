@@ -1,1 +1,2 @@
-com.bluesgao.databus.processor.ProtocolProcessor
+com.bluesgao.databus.processor.HttpProcessor
+com.bluesgao.databus.processor.SqlProcessor
