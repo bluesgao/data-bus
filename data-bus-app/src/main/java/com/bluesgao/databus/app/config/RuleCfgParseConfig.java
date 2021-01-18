@@ -3,7 +3,7 @@ package com.bluesgao.databus.app.config;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.bluesgao.databus.core.common.Constants;
+import com.bluesgao.databus.app.common.Constants;
 import com.bluesgao.databus.core.rule.RuleCfgHolder;
 import com.bluesgao.databus.core.rule.RuleCfgValidor;
 import com.bluesgao.databus.core.rule.entity.RuleCfg;

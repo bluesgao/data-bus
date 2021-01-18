@@ -13,6 +13,8 @@
         <module>data-bus-plugin</module>
         <module>data-bus-app</module>
         <module>data-bus-util</module>
+        <module>data-bus-fetcher</module>
+        <module>data-bus-processor</module>
     </modules>
 
     <properties>
@@ -50,8 +52,8 @@
                 <version>4.5.2</version>
             </dependency>
             <!--<dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <groupId>org.elasticsearch.builder</groupId>
+                <artifactId>elasticsearch-rest-high-level-builder</artifactId>
                 <version>7.1.1</version>
                 <exclusions>
                     <exclusion>
@@ -59,14 +61,14 @@
                         <artifactId>elasticsearch</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>org.elasticsearch.client</groupId>
-                        <artifactId>elasticsearch-rest-client</artifactId>
+                        <groupId>org.elasticsearch.builder</groupId>
+                        <artifactId>elasticsearch-rest-builder</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>-->
             <!--<dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-client</artifactId>
+                <groupId>org.elasticsearch.builder</groupId>
+                <artifactId>elasticsearch-rest-builder</artifactId>
                 <version>7.1.1</version>
             </dependency>
             <dependency>

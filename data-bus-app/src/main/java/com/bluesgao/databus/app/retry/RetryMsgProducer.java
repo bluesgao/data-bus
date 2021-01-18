@@ -1,8 +1,8 @@
 package com.bluesgao.databus.app.retry;
 
 import com.alibaba.fastjson.JSON;
+import com.bluesgao.databus.app.common.Constants;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
-import com.bluesgao.databus.core.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;

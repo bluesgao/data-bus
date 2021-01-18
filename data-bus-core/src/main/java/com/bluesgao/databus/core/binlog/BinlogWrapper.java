@@ -15,7 +15,7 @@ public class BinlogWrapper implements Serializable {
     private static final long serialVersionUID = 1L;
     private Binlog binlog;
     private Retry retry;
-    private Map<String, String> data;
+    private Map<String, Object> data;
 
     public static BinlogWrapper warp(Binlog binlog) {
         return warp(binlog, 0, "", 0);

@@ -10,18 +10,18 @@ import java.util.Map;
 public class DataFetcherResult implements Serializable {
     private Boolean success;
     private String msg;
-    private Map<String, String> data;
+    private Map<String, Object> data;
 
     private DataFetcherResult() {
     }
 
-    public DataFetcherResult(Boolean success, String msg, Map<String, String> data) {
+    public DataFetcherResult(Boolean success, String msg, Map<String, Object> data) {
         this.success = success;
         this.msg = msg;
         this.data = data;
     }
 
-    public static DataFetcherResult success(Map<String, String> data) {
+    public static DataFetcherResult success(Map<String, Object> data) {
         return new DataFetcherResult(true, "", data);
     }
 
@@ -37,7 +37,7 @@ public class DataFetcherResult implements Serializable {
         return msg;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 }

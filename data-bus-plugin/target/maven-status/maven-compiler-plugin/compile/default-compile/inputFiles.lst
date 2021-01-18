@@ -1,7 +1,10 @@
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/fetcher/DataFetcherResult.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/processor/DataProcessor.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/fetcher/DataFetcher.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/entity/Redis.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/entity/DsCfg.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/processor/DataProcessorResult.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus-parent/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/entity/MySql.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/fetcher/DataFetcher.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/DsType.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/fetcher/DataFetcherResult.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/processor/DataProcessorResult.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/DataSourceType.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/ExceptionPolicyType.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/processor/DataProcessor.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/EventType.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/ModeType.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-plugin/src/main/java/com/bluesgao/databus/plugin/common/ProtocolType.java
