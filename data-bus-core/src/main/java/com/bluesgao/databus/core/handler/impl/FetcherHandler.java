@@ -2,14 +2,16 @@ package com.bluesgao.databus.core.handler.impl;
 
 import com.bluesgao.databus.core.binlog.Binlog;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
+import com.bluesgao.databus.core.handler.HandlerResult;
+import com.bluesgao.databus.core.handler.RuleHandler;
 import com.bluesgao.databus.core.plugin.DataFetcherManager;
 import com.bluesgao.databus.core.rule.entity.Fetcher;
 import com.bluesgao.databus.core.rule.entity.RuleCfg;
-import com.bluesgao.databus.core.handler.HandlerResult;
-import com.bluesgao.databus.core.handler.RuleHandler;
-import com.bluesgao.databus.plugin.DataFetcher;
+import com.bluesgao.databus.plugin.fetcher.DataFetcher;
+import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -28,13 +30,15 @@ public class FetcherHandler implements RuleHandler {
             DataFetcher dataFetcher = DataFetcherManager.get(fetcher.getName());
             if (dataFetcher == null) {
                 //未找到指定的dataFetcher
-                return HandlerResult.fail(FetcherHandler.class.getName(),String.format("未找到指定的dataFetcher[%s]", fetcher.getName()));
+                return HandlerResult.fail(FetcherHandler.class.getName(), String.format("未找到指定的dataFetcher[%s]", fetcher.getName()));
             }
-            fetchedData = dataFetcher.fetch(binlogWrapper.getData(), binlogWrapper.getBinlog().getType());
-            if (fetchedData == null || fetchedData.size() == 0) {
+            DataFetcherResult dataFetcherResult = dataFetcher.fetch(ruleCfg.getFetcher().getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
+            if (dataFetcherResult == null || !dataFetcherResult.getSuccess() || CollectionUtils.isEmpty(dataFetcherResult.getData())) {
                 //自定的dataFetcher获取数据为空
-                return HandlerResult.fail(FetcherHandler.class.getName(),String.format("自定的dataFetcher[%s]获取数据为空", fetcher.getName()));
+                return HandlerResult.fail(FetcherHandler.class.getName(),
+                        String.format("自定的dataFetcher[%s]获取数据为空,原因[%s]", fetcher.getName(), dataFetcherResult.getMsg()));
             }
+            fetchedData = dataFetcherResult.getData();
         } else {
             //默认是取binlog中的data
             fetchedData = getDataFromBinlog(binlogWrapper.getBinlog());

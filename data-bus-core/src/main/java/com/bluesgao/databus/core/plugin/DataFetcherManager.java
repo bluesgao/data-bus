@@ -1,6 +1,6 @@
 package com.bluesgao.databus.core.plugin;
 
-import com.bluesgao.databus.plugin.DataFetcher;
+import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;

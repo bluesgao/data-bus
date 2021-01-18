@@ -1,6 +1,7 @@
-com/bluesgao/databus/plugin/DataProcessor.class
-com/bluesgao/databus/plugin/ClientBuilder.class
+com/bluesgao/databus/plugin/fetcher/DataFetcherResult.class
+com/bluesgao/databus/plugin/processor/DataProcessor.class
+com/bluesgao/databus/plugin/processor/DataProcessorResult.class
 com/bluesgao/databus/plugin/entity/MySql.class
 com/bluesgao/databus/plugin/entity/Redis.class
 com/bluesgao/databus/plugin/entity/DsCfg.class
-com/bluesgao/databus/plugin/DataFetcher.class
+com/bluesgao/databus/plugin/fetcher/DataFetcher.class
