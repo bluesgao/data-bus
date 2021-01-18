@@ -63,6 +63,12 @@
             <artifactId>data-bus-fetcher</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--data-bus-processor-->
+        <dependency>
+            <groupId>com.bluesgao</groupId>
+            <artifactId>data-bus-processor</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

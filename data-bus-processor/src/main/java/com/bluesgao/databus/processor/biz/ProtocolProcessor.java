@@ -11,9 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,36 +35,31 @@ public class ProtocolProcessor implements DataProcessor {
 
     @Override
     public DataProcessorResult process(Map<String, String> params, String event, Map<String, Object> data) {
+        /**
+         * "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+         * "driverClassName": "com.mysql.jdbc.Driver",
+         * "username": "zyc",
+         * "password": "XNtyEFrgMwR5DYtBEjBG",
+         * "database": "wyw_dev"
+         */
+        JdbcProps jdbcProps = new JdbcProps();
+        jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
+        jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
+        jdbcProps.setUsername("zyc");
+        jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
+
+        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
-
-            /**
-             * "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
-             * "driverClassName": "com.mysql.jdbc.Driver",
-             * "username": "zyc",
-             * "password": "XNtyEFrgMwR5DYtBEjBG",
-             * "database": "wyw_dev"
-             */
-            JdbcProps jdbcProps = new JdbcProps();
-            jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
-            jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
-            jdbcProps.setUsername("zyc");
-            jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
-            DataSource dataSource = JdbcBuilder.build(jdbcProps);
-
-            List<Map<String, Object>> dataList = null;
             try {
-                List<Object> updateParams = new ArrayList<>();
-                updateParams.add(data.get("protocol_id"));
                 String sql = upsertSql("mls_plan", data);
                 if (sql == null) {
-                    DataProcessorResult.fail("upsertSql生成失败");
+                    return DataProcessorResult.fail("upsertSql生成失败");
                 }
-                JdbcUtils.execute(dataSource, sql, updateParams);
+                JdbcUtils.execute(dataSource, sql, Collections.emptyList());
+                return DataProcessorResult.success();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
-            if (dataList != null && dataList.size() > 0) {
-                return DataProcessorResult.success();
             }
         }
         return DataProcessorResult.fail("");
@@ -76,7 +70,7 @@ public class ProtocolProcessor implements DataProcessor {
         return ProtocolProcessor.class.getCanonicalName();
     }
 
-    public String upsertSql(String table, Map<String, Object> data) {
+    private String upsertSql(String table, Map<String, Object> data) {
         if (StringUtils.isEmpty(table) || data == null || data.size() == 0) {
             return null;
         }

@@ -43,16 +43,14 @@ public class ProtocolFetcher implements DataFetcher {
          *       "password": "XNtyEFrgMwR5DYtBEjBG",
          *       "database": "renewscc_dev"
          */
+        JdbcProps jdbcProps = new JdbcProps();
+        jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
+        jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
+        jdbcProps.setUsername("zyc");
+        jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
 
+        DataSource dataSource = JdbcBuilder.build(jdbcProps);
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
-
-            JdbcProps jdbcProps = new JdbcProps();
-            jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
-            jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
-            jdbcProps.setUsername("zyc");
-            jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
-            DataSource dataSource = JdbcBuilder.build(jdbcProps);
-
             List<Map<String, Object>> dataList = null;
             try {
                 List<Object> queryParams = new ArrayList<>();

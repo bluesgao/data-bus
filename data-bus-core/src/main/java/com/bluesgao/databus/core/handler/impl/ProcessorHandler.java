@@ -23,7 +23,7 @@ public class ProcessorHandler implements RuleHandler {
                 //未找到指定的dataProcessor
                 return HandlerResult.fail(ProcessorHandler.class.getName(), String.format("未找到指定的dataProcessor[%s]", processor.getName()));
             }
-            DataProcessorResult ret = dataProcessor.process(processor.getParams(), binlogWrapper.getBinlog().getType(), RuleHandler.getDataFromBinlog(binlogWrapper.getBinlog()));
+            DataProcessorResult ret = dataProcessor.process(processor.getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
             if (ret == null || !ret.getSuccess()) {
                 //指定的dataProcessor处理失败
                 return HandlerResult.fail(ProcessorHandler.class.getName(), String.format("指定的dataProcessor[%s]处理失败,原因[%s]", processor.getName(), ret.getMsg()));
