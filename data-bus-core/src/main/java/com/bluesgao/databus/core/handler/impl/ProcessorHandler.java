@@ -9,10 +9,8 @@ import com.bluesgao.databus.core.rule.entity.RuleCfg;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 public class ProcessorHandler implements RuleHandler {
 
     @Override

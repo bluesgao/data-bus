@@ -11,5 +11,5 @@ import java.util.Map;
 public class Processor implements Serializable {
     private String name;
     private String desc;
-    private Map<String,String> params;
+    private Map<String, String> params;
 }

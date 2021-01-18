@@ -1,4 +1,4 @@
-package com.bluesgao.databus.core.util.validation;
+package com.bluesgao.databus.core.rule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.ToString;
 
 /**
  * Valid配置文件校验异常消息实体
+ *
  * @author bei.wu
  */
 @Data

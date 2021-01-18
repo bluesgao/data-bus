@@ -2,16 +2,7 @@ package com.bluesgao.databus.plugin.entity;
 
 import java.io.Serializable;
 
-public class Redis  implements Serializable {
-
-    /**
-     * redis连接地址
-     */
-    private String host;
-    /**
-     * redis连接端口号
-     */
-    private String port;
+public class Redis implements Serializable {
 
     /**
      * 数据源连接用户名
@@ -25,6 +16,14 @@ public class Redis  implements Serializable {
      * 数据源实例
      */
     protected String database;
+    /**
+     * redis连接地址
+     */
+    private String host;
+    /**
+     * redis连接端口号
+     */
+    private String port;
 
     public Redis(String host, String port, String userName, String password, String database) {
         this.host = host;

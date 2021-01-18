@@ -14,16 +14,13 @@ import javax.annotation.Resource;
 @Slf4j
 @Component
 public class RetryMsgProducer {
+    private static String targetTopic = null;
     @Resource
     private KafkaTemplate kafkaTemplate;
-
     @Value("${spring.kafka.producer.retry.topic}")
     private String RETRY_TOPIC;
-
     @Value("${spring.kafka.producer.fail.topic}")
     private String FAIL_TOPIC;
-
-    private static String targetTopic = null;
 
     public void send(BinlogWrapper msg) {
         if (msg != null) {

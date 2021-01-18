@@ -1,4 +1,4 @@
-package com.bluesgao.databus.core.util.sql;
+package com.bluesgao.databus.common.util.sql;
 
 import java.util.Map;
 

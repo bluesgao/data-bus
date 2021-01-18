@@ -3,20 +3,18 @@ package com.bluesgao.databus.core.handler.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import com.bluesgao.databus.core.binlog.Binlog;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
-import com.bluesgao.databus.core.rule.entity.Monitor;
-import com.bluesgao.databus.core.rule.entity.RuleCfg;
 import com.bluesgao.databus.core.handler.HandlerResult;
 import com.bluesgao.databus.core.handler.RuleHandler;
+import com.bluesgao.databus.core.rule.entity.Monitor;
+import com.bluesgao.databus.core.rule.entity.RuleCfg;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Component
 public class MonitorHandler implements RuleHandler {
 
     @Override

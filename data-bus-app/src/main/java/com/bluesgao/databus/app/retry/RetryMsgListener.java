@@ -1,7 +1,6 @@
 package com.bluesgao.databus.app.retry;
 
 import com.alibaba.fastjson.JSON;
-
 import com.bluesgao.databus.app.binlog.BinlogDispatcher;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
 import com.bluesgao.databus.core.common.Constants;

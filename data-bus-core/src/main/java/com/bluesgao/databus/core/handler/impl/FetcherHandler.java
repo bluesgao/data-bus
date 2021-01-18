@@ -10,15 +10,12 @@ import com.bluesgao.databus.core.rule.entity.RuleCfg;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@Component
 public class FetcherHandler implements RuleHandler {
 
     @Override
@@ -32,13 +29,14 @@ public class FetcherHandler implements RuleHandler {
                 //未找到指定的dataFetcher
                 return HandlerResult.fail(FetcherHandler.class.getName(), String.format("未找到指定的dataFetcher[%s]", fetcher.getName()));
             }
-            DataFetcherResult dataFetcherResult = dataFetcher.fetch(ruleCfg.getFetcher().getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
-            if (dataFetcherResult == null || !dataFetcherResult.getSuccess() || CollectionUtils.isEmpty(dataFetcherResult.getData())) {
+            DataFetcherResult ret = dataFetcher.fetch(ruleCfg.getFetcher().getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
+            if (ret == null || !ret.getSuccess() ||
+                    ret.getData() == null || ret.getData().size() == 0) {
                 //自定的dataFetcher获取数据为空
                 return HandlerResult.fail(FetcherHandler.class.getName(),
-                        String.format("自定的dataFetcher[%s]获取数据为空,原因[%s]", fetcher.getName(), dataFetcherResult.getMsg()));
+                        String.format("自定的dataFetcher[%s]获取数据为空,原因[%s]", fetcher.getName(), ret.getMsg()));
             }
-            fetchedData = dataFetcherResult.getData();
+            fetchedData = ret.getData();
         } else {
             //默认是取binlog中的data
             fetchedData = getDataFromBinlog(binlogWrapper.getBinlog());

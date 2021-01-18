@@ -1,4 +1,4 @@
-package com.bluesgao.databus.core.util;
+package com.bluesgao.databus.util;
 
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.beanutils.BeanUtils;
@@ -11,7 +11,7 @@ public class BeanMapUtils {
         return new BeanMap(ojb);
     }
 
-    public static <T> T mapToBean(Map map, Class<T> beanClass){
+    public static <T> T mapToBean(Map map, Class<T> beanClass) {
         T ojb = null;
         try {
             ojb = beanClass.newInstance();

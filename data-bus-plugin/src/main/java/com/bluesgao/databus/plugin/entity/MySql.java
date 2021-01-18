@@ -5,15 +5,6 @@ import java.io.Serializable;
 public class MySql implements Serializable {
 
     /**
-     * 数据库地址
-     */
-    private String url;
-    /**
-     * mysql驱动
-     */
-    private String driverClassName;
-
-    /**
      * 数据源连接用户名
      */
     protected String userName;
@@ -25,6 +16,14 @@ public class MySql implements Serializable {
      * 数据源实例
      */
     protected String database;
+    /**
+     * 数据库地址
+     */
+    private String url;
+    /**
+     * mysql驱动
+     */
+    private String driverClassName;
 
     public MySql(String url, String driverClassName, String userName, String password, String database) {
         this.url = url;

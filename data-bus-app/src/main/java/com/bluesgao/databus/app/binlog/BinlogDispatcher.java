@@ -21,6 +21,7 @@ import java.util.concurrent.Executor;
 public class BinlogDispatcher {
     @Resource
     private Executor handlerExecutor;
+
     public void dispatch(List<BinlogWrapper> binlogWrappers) {
         for (BinlogWrapper binlogWrapper : binlogWrappers) {
             Binlog binlog = binlogWrapper.getBinlog();

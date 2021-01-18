@@ -1,9 +1,9 @@
 package com.bluesgao.databus.app.binlog;
 
 import com.alibaba.fastjson.JSON;
+import com.bluesgao.databus.core.binlog.Binlog;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
 import com.bluesgao.databus.core.common.Constants;
-import com.bluesgao.databus.core.binlog.Binlog;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;

@@ -2,6 +2,7 @@ package com.bluesgao.databus.core.common;
 
 /**
  * 数据源配置枚举
+ *
  * @author bei.wu
  */
 public enum DataSourceType {
@@ -25,10 +26,11 @@ public enum DataSourceType {
 
     /**
      * DataSource配置文件中type类型
+     *
      * @param type 数据源类型
      * @return DataSourceType
      */
-    public static DataSourceType getDataSourceEnum(String type){
+    public static DataSourceType getDataSourceEnum(String type) {
         for (DataSourceType ds : DataSourceType.values()) {
             if (type.toUpperCase().equals(ds.name())) {
                 return ds;
