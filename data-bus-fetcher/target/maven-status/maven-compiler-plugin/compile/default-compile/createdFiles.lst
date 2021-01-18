@@ -1,11 +1,1 @@
-com/bluesgao/databus/fetcher/datasource/EsBuilder$3.class
-com/bluesgao/databus/fetcher/datasource/JdbcBuilder.class
-com/bluesgao/databus/fetcher/biz/ProtocolFetcher.class
-com/bluesgao/databus/fetcher/datasource/EsBuilder$1.class
-com/bluesgao/databus/fetcher/datasource/JdbcProps.class
-com/bluesgao/databus/fetcher/datasource/EsProps.class
-com/bluesgao/databus/fetcher/datasource/RedisProps.class
-com/bluesgao/databus/fetcher/datasource/EsBuilder.class
-com/bluesgao/databus/fetcher/datasource/RedisBuilder.class
-com/bluesgao/databus/fetcher/datasource/EsBuilder$2.class
-com/bluesgao/databus/fetcher/JdbcUtils.class
+com/bluesgao/databus/fetcher/ProtocolFetcher.class

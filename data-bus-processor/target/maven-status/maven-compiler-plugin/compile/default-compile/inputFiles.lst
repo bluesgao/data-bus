@@ -1,7 +1,1 @@
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/RedisBuilder.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/JdbcProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/RedisProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/EsProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/JdbcBuilder.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/biz/ProtocolProcessor.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/datasource/EsBuilder.java
+/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-processor/src/main/java/com/bluesgao/databus/processor/ProtocolProcessor.java
