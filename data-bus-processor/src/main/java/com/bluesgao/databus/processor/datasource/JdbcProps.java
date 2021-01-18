@@ -1,4 +1,4 @@
-package com.bluesgao.databus.fetcher.datasource;
+package com.bluesgao.databus.processor.datasource;
 
 import lombok.Data;
 import lombok.ToString;

@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface RuleHandler {
-    HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg);
-
     /**
      * 从binlog中获取data
      *
@@ -23,4 +21,6 @@ public interface RuleHandler {
         }
         return resultMap;
     }
+
+    HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg);
 }

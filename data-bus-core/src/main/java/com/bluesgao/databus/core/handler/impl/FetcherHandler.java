@@ -1,6 +1,5 @@
 package com.bluesgao.databus.core.handler.impl;
 
-import com.bluesgao.databus.core.binlog.Binlog;
 import com.bluesgao.databus.core.binlog.BinlogWrapper;
 import com.bluesgao.databus.core.handler.HandlerResult;
 import com.bluesgao.databus.core.handler.RuleHandler;
@@ -21,6 +20,8 @@ public class FetcherHandler implements RuleHandler {
     @Override
     public HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg) {
         //获取需要处理的数据
+        log.info("数据获取-处理器：binlogWrapper:{},ruleCfg:{}", binlogWrapper, ruleCfg);
+
         Fetcher fetcher = ruleCfg.getFetcher();
         Map<String, Object> fetchedData = new HashMap<>();
         if (fetcher != null && !StringUtils.isEmpty(fetcher.getName())) {

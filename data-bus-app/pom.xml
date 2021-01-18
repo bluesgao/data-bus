@@ -57,6 +57,12 @@
             <groupId>com.bluesgao</groupId>
             <artifactId>data-bus-core</artifactId>
         </dependency>
+        <!--data-bus-fetcher-->
+        <dependency>
+            <groupId>com.bluesgao</groupId>
+            <artifactId>data-bus-fetcher</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

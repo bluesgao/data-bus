@@ -3,26 +3,23 @@
   "desc": "用户数据同步-多表聚合到单表",
   "monitor": [
     {
-      "schema": "test",
-      "table": "t_user",
+      "schema": "renewscc_dev",
+      "table": "trade_protocol",
       "event": [
         "insert",
         "update"
       ],
-      "field": [
-        "id",
-        "name"
-      ]
+      "field": []
     }
   ],
   "fetcher": {
-    "name": "fetch001",
+    "name": "com.bluesgao.databus.fetcher.biz.ProtocolFetcher",
     "desc": "从mysql获取数据"
   },
   "processor": [
     {
-      "name": "process001",
-      "desc": "向mysql t_user表写数据"
+      "name": "com.bluesgao.databus.processor.biz.ProtocolProcessor",
+      "desc": "向mysql表写数据"
     }
   ]
 }

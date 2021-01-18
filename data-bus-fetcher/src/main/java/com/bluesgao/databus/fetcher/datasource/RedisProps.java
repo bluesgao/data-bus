@@ -8,15 +8,6 @@ import lombok.ToString;
 public class RedisProps {
 
     /**
-     * redis连接地址
-     */
-    private String host;
-    /**
-     * redis连接端口号
-     */
-    private String port;
-
-    /**
      * 数据源连接用户名
      */
     protected String username;
@@ -28,4 +19,12 @@ public class RedisProps {
      * 数据源实例
      */
     protected String database;
+    /**
+     * redis连接地址
+     */
+    private String host;
+    /**
+     * redis连接端口号
+     */
+    private String port;
 }

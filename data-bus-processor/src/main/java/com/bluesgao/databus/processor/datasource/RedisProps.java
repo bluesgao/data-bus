@@ -1,11 +1,12 @@
-package com.bluesgao.databus.fetcher.datasource;
+package com.bluesgao.databus.processor.datasource;
 
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
-public class JdbcProps {
+public class RedisProps {
+
     /**
      * 数据源连接用户名
      */
@@ -19,11 +20,11 @@ public class JdbcProps {
      */
     protected String database;
     /**
-     * 数据库地址
+     * redis连接地址
      */
-    private String url;
+    private String host;
     /**
-     * mysql驱动
+     * redis连接端口号
      */
-    private String driverClassName;
+    private String port;
 }

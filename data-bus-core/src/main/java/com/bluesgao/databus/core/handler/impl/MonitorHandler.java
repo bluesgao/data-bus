@@ -20,7 +20,7 @@ public class MonitorHandler implements RuleHandler {
     @Override
     public HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg) {
         //监控的表，字段，事件
-        log.info("监控过滤处理器：binlogWrapper:{},ruleCfg:{}", binlogWrapper, ruleCfg);
+        log.info("监控过滤-处理器：binlogWrapper:{},ruleCfg:{}", binlogWrapper, ruleCfg);
         //判断表是否是需要监控的,只要有一个符合条件就表示这个schema和table需要处理
         for (Monitor monitor : ruleCfg.getMonitor()) {
             if (monitor.getSchema().equals(binlogWrapper.getBinlog().getDatabase()) && monitor.getTable().equals(binlogWrapper.getBinlog().getTable())) {
@@ -28,9 +28,9 @@ public class MonitorHandler implements RuleHandler {
                     boolean flag = checkField(binlogWrapper.getBinlog(), monitor);
                     if (!flag) {
                         return HandlerResult.fail(MonitorHandler.class.getName(), "监控的表，事件匹配，但是字段不匹配");
+                    } else {
+                        return HandlerResult.success(MonitorHandler.class.getName());
                     }
-                } else {
-                    return HandlerResult.success(MonitorHandler.class.getName());
                 }
             }
         }

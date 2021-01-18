@@ -10,13 +10,10 @@ import com.bluesgao.databus.core.rule.entity.RuleCfg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -33,22 +30,15 @@ public class RuleCfgParseConfig {
     @PostConstruct
     public void init() {
         //todo 文件读取问题
-        String path = new ClassPathResource(rulePath).getPath();
-        log.info("*** 开始-加载规则配置文件 *** path:{}", path);
-        List<String> ruleList = FileUtil.listFileNames(path);
+        //String path = new ClassPathResource(rulePath).getPath();
+        log.info("*** 开始-加载规则配置文件 *** path:{}", rulePath);
+        List<String> ruleList = FileUtil.listFileNames(rulePath);
         if (CollectionUtils.isEmpty(ruleList)) {
             log.warn("{}, 未发现配置文件", rulePath);
         }
         ruleList.forEach(rule -> {
             if (rule.endsWith(Constants.SETTING_SUFFIX)) {
-                //File file = FileUtil.file(path, rule);
-                File file = null;
-                try {
-                    file = ResourceUtils.getFile(rule);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
+                File file = FileUtil.file(rulePath, rule);
                 log.info("配置文件路径：{}", file.toString());
                 String content = FileUtil.readUtf8String(file);
                 if (StrUtil.isNotBlank(content)) {
