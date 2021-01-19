@@ -43,7 +43,7 @@ public class JdbcProcessor implements DataProcessor {
 
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
 
-        String table = params.get(JdbcCfgConstants.table).toString();
+        String table = params.get(JdbcCfgConstants.biz_table).toString();
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
             log.info("INSERT OR UPDATE 处理中");
             try {
@@ -59,7 +59,7 @@ public class JdbcProcessor implements DataProcessor {
         } else if (event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
             log.info("DELETE 处理中");
             try {
-                String sql = deleteSql(table, getParamValue(data, (List<String>) params.get(JdbcCfgConstants.paramFields)));
+                String sql = deleteSql(table, getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields)));
                 if (sql == null) {
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
@@ -93,11 +93,11 @@ public class JdbcProcessor implements DataProcessor {
             err.append("username为空;");
         } else if (Objects.isNull(params.get(JdbcCfgConstants.password))) {
             err.append("password为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.table))) {
-            err.append("table为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.paramFields)) ||
-                !(params.get(JdbcCfgConstants.paramFields) instanceof List)) {
-            err.append("paramFields为空;");
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_table))) {
+            err.append("biz_table为空;");
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_fields)) ||
+                !(params.get(JdbcCfgConstants.biz_fields) instanceof List)) {
+            err.append("biz_fields为空;");
         }
         return err.toString();
     }
@@ -172,7 +172,7 @@ public class JdbcProcessor implements DataProcessor {
                 sql.append(key);
                 sql.append(" = ");
                 sql.append("'" + value + "'");
-                //sql.append(value);
+                //biz_sql.append(value);
 
                 if (j < data.keySet().size() - 1) {
                     sql.append(" , ");

@@ -24,7 +24,7 @@ import java.util.Map;
 public class ProtocolProcessor implements DataProcessor {
 
     @Override
-    public DataProcessorResult process(DataProcessorParam param, String event, Map<String, Object> data) {
+    public DataProcessorResult process(Map<String, Object> params, String event, Map<String, Object> data) {
         /**
          * "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
          * "driverClassName": "com.mysql.jdbc.Driver",

@@ -1,8 +1,11 @@
 package com.bluesgao.databus.plugin.common;
 
 public interface HttpCfgConstants {
+    /*http协议配置*/
     String protocol = "protocol";
     String url = "url";
-    String params = "params";
-    String headers = "headers";
+    /*http请求参数*/
+    String biz_fields = "biz.fields";
+    /*http请求头*/
+    String biz_headers = "biz.headers";
 }

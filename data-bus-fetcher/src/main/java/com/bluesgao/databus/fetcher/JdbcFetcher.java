@@ -38,8 +38,8 @@ public class JdbcFetcher implements DataFetcher {
          *       "driverClassName": "com.mysql.jdbc.Driver",
          *       "username": "zyc",
          *       "password": "XNtyEFrgMwR5DYtBEjBG",
-         *       "sql": "select * from t_user where user_id=?",
-         *       "paramFields":"user_id"
+         *       "biz.sql": "select * from t_user where user_id=?",
+         *       "biz.fields":"user_id"
          */
 
         JdbcProps jdbcProps = new JdbcProps();
@@ -53,8 +53,8 @@ public class JdbcFetcher implements DataFetcher {
 
         List<Map<String, Object>> dataList = null;
         try {
-            List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.paramFields));
-            String script = params.get(JdbcCfgConstants.sql).toString();
+            List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields));
+            String script = params.get(JdbcCfgConstants.biz_sql).toString();
             dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
@@ -82,11 +82,11 @@ public class JdbcFetcher implements DataFetcher {
             err.append("username为空;");
         } else if (Objects.isNull(params.get(JdbcCfgConstants.password))) {
             err.append("password为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.sql))) {
-            err.append("sql为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.paramFields)) ||
-                !(params.get(JdbcCfgConstants.paramFields) instanceof List)) {
-            err.append("paramFields为空;");
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_sql))) {
+            err.append("biz_sql为空;");
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_fields)) ||
+                !(params.get(JdbcCfgConstants.biz_fields) instanceof List)) {
+            err.append("biz_fields为空;");
         }
         return err.toString();
     }

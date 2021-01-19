@@ -5,11 +5,10 @@ import com.alibaba.fastjson.JSON;
 import com.bluesgao.databus.plugin.common.HttpCfgConstants;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
-import com.bluesgao.databus.util.BeanMapUtils;
 import com.bluesgao.databus.util.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +36,7 @@ public class HttpFetcher implements DataFetcher {
         //todo
         try {
             String url = params.get(HttpCfgConstants.url).toString();
-            Map<String, Object> postMap = BeanMapUtils.beanToMap(params.get(HttpCfgConstants.params));
+            Map<String, Object> postMap = getPostParamValues(data, (List<String>) params.get(HttpCfgConstants.biz_fields));
             String ret = HttpUtils.postJson(url, JSONUtils.toJSONString(postMap), null);
             if (ret != null && ret.length() > 0) {
                 Map<String, Object> resultMap = JSON.parseObject(ret, Map.class);
@@ -60,19 +59,18 @@ public class HttpFetcher implements DataFetcher {
             err.append("protocol为空;");
         } else if (Objects.isNull(params.get(HttpCfgConstants.url))) {
             err.append("url为空;");
-        } else if (Objects.isNull(params.get(HttpCfgConstants.params))) {
-            err.append("params为空;");
+        } else if (Objects.isNull(params.get(HttpCfgConstants.biz_fields))) {
+            err.append("biz_fields为空;");
         }
         return err.toString();
     }
 
-    private List<Object> getQueryParams(Map<String, Object> data, String paramFields) {
-        List<Object> queryParams = new ArrayList<>();
-        String[] qrys = paramFields.split(",");
-        for (int i = 0; i < qrys.length; i++) {
-            Object value = data.get(qrys[i]);
-            queryParams.add(value);
+    private Map<String, Object> getPostParamValues(Map<String, Object> data, List<String> paramFields) {
+        Map<String, Object> kvMap = new HashMap<>(8);
+        for (String field : paramFields) {
+            Object value = data.get(field);
+            kvMap.put(field, value);
         }
-        return queryParams;
+        return kvMap;
     }
 }

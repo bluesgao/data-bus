@@ -32,7 +32,7 @@ public class HttpProcessor implements DataProcessor {
 
         try {
             String url = params.get(HttpCfgConstants.url).toString();
-            Map<String, Object> postMap = BeanMapUtils.beanToMap(params.get(HttpCfgConstants.params));
+            Map<String, Object> postMap = BeanMapUtils.beanToMap(params.get(HttpCfgConstants.biz_fields));
             String ret = HttpUtils.postJson(url, JSONUtils.toJSONString(postMap), null);
             if (ret != null && ret.length() > 0) {
                 return DataProcessorResult.success(ret);
@@ -54,7 +54,7 @@ public class HttpProcessor implements DataProcessor {
             err.append("protocol为空;");
         } else if (Objects.isNull(params.get(HttpCfgConstants.url))) {
             err.append("url为空;");
-        } else if (Objects.isNull(params.get(HttpCfgConstants.params))) {
+        } else if (Objects.isNull(params.get(HttpCfgConstants.biz_fields))) {
             err.append("params为空;");
         }
         return err.toString();
