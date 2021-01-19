@@ -1,9 +1,9 @@
 package com.bluesgao.databus.fetcher.custom;
 
 import com.alibaba.druid.util.JdbcUtils;
-import com.bluesgao.databus.database.JdbcBuilder;
-import com.bluesgao.databus.database.JdbcProps;
-import com.bluesgao.databus.plugin.common.EventType;
+import com.bluesgao.databus.ds.JdbcBuilder;
+import com.bluesgao.databus.ds.JdbcProps;
+import com.bluesgao.databus.plugin.common.enums.EventType;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +24,14 @@ import java.util.Map;
 public class ProtocolFetcher implements DataFetcher {
 
     @Override
-    public DataFetcherResult fetch(DataFetcherParam params, String event, Map<String, Object> data) {
+    public DataFetcherResult fetch(Map<String, Object> params, String event, Map<String, Object> data) {
 //初始化数据源
         /**
          *       "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
          *       "driverClassName": "com.mysql.jdbc.Driver",
          *       "username": "zyc",
          *       "password": "XNtyEFrgMwR5DYtBEjBG",
-         *       "database": "renewscc_dev"
+         *       "ds": "renewscc_dev"
          */
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");

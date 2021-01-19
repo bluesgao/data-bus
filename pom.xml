@@ -15,7 +15,7 @@
         <module>data-bus-util</module>
         <module>data-bus-fetcher</module>
         <module>data-bus-processor</module>
-        <module>data-bus-datasource</module>
+        <module>data-bus-ds</module>
     </modules>
 
     <properties>

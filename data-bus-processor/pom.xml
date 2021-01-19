@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.bluesgao</groupId>
-            <artifactId>data-bus-datasource</artifactId>
+            <artifactId>data-bus-ds</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

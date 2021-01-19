@@ -1,10 +1,10 @@
 package com.bluesgao.databus.processor;
 
 import com.alibaba.fastjson.JSON;
-import com.bluesgao.databus.database.RedisBuilder;
-import com.bluesgao.databus.database.RedisProps;
-import com.bluesgao.databus.plugin.common.EventType;
-import com.bluesgao.databus.plugin.common.RedisCfgConstants;
+import com.bluesgao.databus.ds.RedisBuilder;
+import com.bluesgao.databus.ds.RedisProps;
+import com.bluesgao.databus.plugin.common.enums.EventType;
+import com.bluesgao.databus.plugin.common.constants.RedisCfgConstants;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import com.google.common.base.CaseFormat;

@@ -2,9 +2,9 @@ package com.bluesgao.databus.processor.custom;
 
 import com.alibaba.druid.util.JdbcUtils;
 import com.alibaba.druid.util.StringUtils;
-import com.bluesgao.databus.database.JdbcBuilder;
-import com.bluesgao.databus.database.JdbcProps;
-import com.bluesgao.databus.plugin.common.EventType;
+import com.bluesgao.databus.ds.JdbcBuilder;
+import com.bluesgao.databus.ds.JdbcProps;
+import com.bluesgao.databus.plugin.common.enums.EventType;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class ProtocolProcessor implements DataProcessor {
          * "driverClassName": "com.mysql.jdbc.Driver",
          * "username": "zyc",
          * "password": "XNtyEFrgMwR5DYtBEjBG",
-         * "database": "wyw_dev"
+         * "ds": "wyw_dev"
          */
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");

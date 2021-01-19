@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 日志格式
- * (name = binlog-test, partition = 0, leaderEpoch = 0, offset = 503, CreateTime = 1607931917686, serialized key size = -1, serialized value size = 270, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = {"fetcher":[{"id":"707","name":"name0"}],"database":"test","builder":1607931917000,"id":502,"isDdl":false,"mysqlType":{"id":"bigint(20)","name":"varchar(60)"},"old":null,"pkNames":["id"],"sql":"","sqlType":{"id":-5,"name":12},"tableName":"t_user","ts":1607931917685,"mode":"INSERT"})
+ * (name = binlog-test, partition = 0, leaderEpoch = 0, offset = 503, CreateTime = 1607931917686, serialized key size = -1, serialized value size = 270, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = {"fetcher":[{"id":"707","name":"name0"}],"ds":"test","builder":1607931917000,"id":502,"isDdl":false,"mysqlType":{"id":"bigint(20)","name":"varchar(60)"},"old":null,"pkNames":["id"],"sql":"","sqlType":{"id":-5,"name":12},"tableName":"t_user","ts":1607931917685,"mode":"INSERT"})
  * <p>
  * {
  * "fetcher":[
@@ -17,7 +17,7 @@ import java.util.Map;
  * "name":"name0"
  * }
  * ],
- * "database":"test",
+ * "ds":"test",
  * "builder":1607931917000,
  * "id":502,
  * "isDdl":false,
@@ -40,7 +40,7 @@ import java.util.Map;
  * }
  * <p>
  * <p>
- * (name = binlog-test, partition = 0, leaderEpoch = 0, offset = 504, CreateTime = 1607931922251, serialized key size = -1, serialized value size = 291, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = {"fetcher":[{"id":"1","name":"test1-bluesgao"}],"database":"test","builder":1607931922000,"id":503,"isDdl":false,"mysqlType":{"id":"bigint(20)","name":"varchar(60)"},"old":[{"name":"test1"}],"pkNames":["id"],"sql":"","sqlType":{"id":-5,"name":12},"tableName":"t_user","ts":1607931922250,"mode":"UPDATE"})
+ * (name = binlog-test, partition = 0, leaderEpoch = 0, offset = 504, CreateTime = 1607931922251, serialized key size = -1, serialized value size = 291, headers = RecordHeaders(headers = [], isReadOnly = false), key = null, value = {"fetcher":[{"id":"1","name":"test1-bluesgao"}],"ds":"test","builder":1607931922000,"id":503,"isDdl":false,"mysqlType":{"id":"bigint(20)","name":"varchar(60)"},"old":[{"name":"test1"}],"pkNames":["id"],"sql":"","sqlType":{"id":-5,"name":12},"tableName":"t_user","ts":1607931922250,"mode":"UPDATE"})
  * <p>
  * {
  * "fetcher":[
@@ -49,7 +49,7 @@ import java.util.Map;
  * "name":"test1-bluesgao"
  * }
  * ],
- * "database":"test",
+ * "ds":"test",
  * "builder":1607931922000,
  * "id":503,
  * "isDdl":false,

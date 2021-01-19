@@ -1,10 +1,10 @@
 package com.bluesgao.databus.processor;
 
 import com.alibaba.druid.util.JdbcUtils;
-import com.bluesgao.databus.database.JdbcBuilder;
-import com.bluesgao.databus.database.JdbcProps;
-import com.bluesgao.databus.plugin.common.EventType;
-import com.bluesgao.databus.plugin.common.JdbcCfgConstants;
+import com.bluesgao.databus.ds.JdbcBuilder;
+import com.bluesgao.databus.ds.JdbcProps;
+import com.bluesgao.databus.plugin.common.enums.EventType;
+import com.bluesgao.databus.plugin.common.constants.JdbcCfgConstants;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import lombok.extern.slf4j.Slf4j;

@@ -2,7 +2,7 @@ package com.bluesgao.databus.fetcher;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
-import com.bluesgao.databus.plugin.common.HttpCfgConstants;
+import com.bluesgao.databus.plugin.common.constants.HttpCfgConstants;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import com.bluesgao.databus.util.HttpUtils;

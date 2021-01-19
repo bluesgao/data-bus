@@ -1,7 +1,7 @@
 package com.bluesgao.databus.processor;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.bluesgao.databus.plugin.common.HttpCfgConstants;
+import com.bluesgao.databus.plugin.common.constants.HttpCfgConstants;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
 import com.bluesgao.databus.util.BeanMapUtils;

@@ -1,9 +1,9 @@
 package com.bluesgao.databus.fetcher;
 
 import com.alibaba.druid.util.JdbcUtils;
-import com.bluesgao.databus.database.JdbcBuilder;
-import com.bluesgao.databus.database.JdbcProps;
-import com.bluesgao.databus.plugin.common.JdbcCfgConstants;
+import com.bluesgao.databus.ds.JdbcBuilder;
+import com.bluesgao.databus.ds.JdbcProps;
+import com.bluesgao.databus.plugin.common.constants.JdbcCfgConstants;
 import com.bluesgao.databus.plugin.fetcher.DataFetcher;
 import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
