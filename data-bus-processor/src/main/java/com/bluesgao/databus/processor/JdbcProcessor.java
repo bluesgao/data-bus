@@ -95,10 +95,10 @@ public class JdbcProcessor implements DataProcessor {
             err.append("password为空;");
         } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_table))) {
             err.append("biz_table为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.biz_fields)) ||
+        } /*else if (Objects.isNull(params.get(JdbcCfgConstants.biz_fields)) ||
                 !(params.get(JdbcCfgConstants.biz_fields) instanceof List)) {
             err.append("biz_fields为空;");
-        }
+        }*/
         return err.toString();
     }
 

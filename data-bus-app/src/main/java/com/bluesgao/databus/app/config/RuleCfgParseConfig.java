@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -50,21 +51,42 @@ public class RuleCfgParseConfig {
         });*/
 
         //文件读取
-        String ruleStr = "";
+        StringBuilder ruleStr = new StringBuilder();
+        InputStreamReader input = null;
+        BufferedReader br = null;
         try {
             Resource resource = new ClassPathResource(rulePath);
-            InputStreamReader intput = new InputStreamReader(resource.getInputStream());
-            BufferedReader reader = new BufferedReader(intput);
-            ruleStr = reader.readLine();
+            input = new InputStreamReader(resource.getInputStream());
+            br = new BufferedReader(input);
+            String str = null;
+            while ((str = br.readLine()) != null) {
+                ruleStr.append(str);
+            }
+
         } catch (Exception e) {
             log.error("rule-cfg文件读取失败", e.getMessage());
             throw new RuntimeException("rule-cfg文件读取失败", e);
+        } finally {
+            if (br!=null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (input!=null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         //文件解析
         List<RuleCfg> ruleCfgList = null;
         try {
-            ruleCfgList = JSON.parseArray(ruleStr, RuleCfg.class);
+            ruleCfgList = JSON.parseArray(ruleStr.toString(), RuleCfg.class);
         } catch (Exception e) {
             log.error("rule-cfg文件解析失败", e.getMessage());
             throw new RuntimeException("rule-cfg文件解析失败", e);
