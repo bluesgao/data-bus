@@ -53,8 +53,9 @@ public class JdbcFetcher implements DataFetcher {
 
         List<Map<String, Object>> dataList = null;
         try {
-            List<Object> queryParams = getQueryParams(data, params.get(JdbcCfgConstants.paramFields).toString());
-            dataList = JdbcUtils.executeQuery(dataSource, params.get(JdbcCfgConstants.sql).toString(), queryParams);
+            List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.paramFields));
+            String script = params.get(JdbcCfgConstants.sql).toString();
+            dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,20 +81,23 @@ public class JdbcFetcher implements DataFetcher {
         } else if (Objects.isNull(params.get(JdbcCfgConstants.username))) {
             err.append("username为空;");
         } else if (Objects.isNull(params.get(JdbcCfgConstants.password))) {
+            err.append("password为空;");
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.sql))) {
             err.append("sql为空;");
-        } else if (Objects.isNull(params.get(JdbcCfgConstants.password))) {
+        } else if (Objects.isNull(params.get(JdbcCfgConstants.paramFields)) ||
+                !(params.get(JdbcCfgConstants.paramFields) instanceof List)) {
             err.append("paramFields为空;");
         }
         return err.toString();
     }
 
-    private List<Object> getQueryParams(Map<String, Object> data, String paramFields) {
-        List<Object> queryParams = new ArrayList<>();
-        String[] qrys = paramFields.split(",");
-        for (int i = 0; i < qrys.length; i++) {
-            Object value = data.get(qrys[i]);
-            queryParams.add(value);
+    private List<Object> getParamValue(Map<String, Object> data, List<String> paramFields) {
+        List<Object> values = new ArrayList<>();
+
+        for (int i = 0; i < paramFields.size(); i++) {
+            Object value = data.get(paramFields.get(i));
+            values.add(value);
         }
-        return queryParams;
+        return values;
     }
 }

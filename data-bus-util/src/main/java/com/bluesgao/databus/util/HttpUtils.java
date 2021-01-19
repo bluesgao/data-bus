@@ -32,7 +32,7 @@ public class HttpUtils {
      * @Return {@link String}
      * @date 2020年07月27日 09:10:10
      */
-    public static String sendGet(String url, Map<String, String> params, Map<String, String> header) throws Exception {
+    public static String get(String url, Map<String, String> params, Map<String, String> header) throws Exception {
         HttpGet httpGet = null;
         String body = "";
         try {
@@ -84,7 +84,7 @@ public class HttpUtils {
      * @Return {@link String}
      * @date 2020年07月27日 09:10:54
      */
-    public static String sendPostJson(String url, String json, Map<String, String> header) throws Exception {
+    public static String postJson(String url, String json, Map<String, String> header) throws Exception {
         HttpPost httpPost = null;
         String body = "";
         try {
@@ -123,13 +123,12 @@ public class HttpUtils {
      * 方法描述: 发送post请求-form表单数据
      *
      * @param url
-     * @param json
      * @param header
      * @throws
      * @Return {@link String}
      * @date 2020年07月27日 09:10:54
      */
-    public static String sendPostForm(String url, Map<String, String> params, Map<String, String> header) throws Exception {
+    public static String postForm(String url, Map<String, String> params, Map<String, String> header) throws Exception {
         HttpPost httpPost = null;
         String body = "";
         try {

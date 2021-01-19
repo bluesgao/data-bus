@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class DataProcessorResult implements Serializable {
     private Boolean success;
     private String msg;
+    private Object data;
 
     private DataProcessorResult() {
     }
@@ -18,8 +19,18 @@ public class DataProcessorResult implements Serializable {
         this.msg = msg;
     }
 
+    public DataProcessorResult(Boolean success, String msg, Object data) {
+        this.success = success;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public static DataProcessorResult success() {
         return new DataProcessorResult(true, "");
+    }
+
+    public static DataProcessorResult success(Object data) {
+        return new DataProcessorResult(true, "", data);
     }
 
     public static DataProcessorResult fail(String msg) {

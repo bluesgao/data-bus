@@ -1,2 +1,4 @@
 com.bluesgao.databus.processor.HttpProcessor
-com.bluesgao.databus.processor.SqlProcessor
+com.bluesgao.databus.processor.JdbcProcessor
+com.bluesgao.databus.processor.RedisProcessor
+com.bluesgao.databus.processor.custom.ProtocolProcessor

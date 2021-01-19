@@ -38,7 +38,7 @@ public class HttpFetcher implements DataFetcher {
         try {
             String url = params.get(HttpCfgConstants.url).toString();
             Map<String, Object> postMap = BeanMapUtils.beanToMap(params.get(HttpCfgConstants.params));
-            String ret = HttpUtils.sendPostJson(url, JSONUtils.toJSONString(postMap), null);
+            String ret = HttpUtils.postJson(url, JSONUtils.toJSONString(postMap), null);
             if (ret != null && ret.length() > 0) {
                 Map<String, Object> resultMap = JSON.parseObject(ret, Map.class);
                 return DataFetcherResult.success(resultMap);
