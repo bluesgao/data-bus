@@ -1,7 +1,7 @@
 [
   {
-    "id": "protocol",
-    "desc": "数据同步-协议表",
+    "id": "mls_plan",
+    "desc": "数据同步-计划",
     "monitor": [
       {
         "schema": "renewscc_dev",
@@ -46,6 +46,150 @@
           "username": "zyc",
           "password": "XNtyEFrgMwR5DYtBEjBG",
           "biz.table": "mls_plan"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_plan_goods",
+    "desc": "数据同步-计划商品",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_goods",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      },
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_payment_plan",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      },
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_coal_mine",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select g.protocol_id as plan_id, g.goods_id, g.goods_name , g.goods_product_img , g.goods_target, g.goods_type , p.delivery_pay_type as down_pay_type, p.delivery_type , p.price as goods_price, p.service_charge, m.coal_mine_id as coalmine_id, m.coal_mine_name as coalmine_name, m.coal_mine_nick_name as coalmine_nickname, m.province as province_code, m.province_name as province_name, m.city as city_code, m.city_name as city_name, m.area as area_code, m.area_name as area_name, m.address as address from trade_protocol_goods g, trade_protocol_payment_plan p, trade_protocol_coal_mine m where g.protocol_id = p.protocol_id and g.protocol_id = m.protocol_id and g.protocol_id = ?",
+        "biz.fields": [
+          "protocol_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_plan_goods"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_plan_logistics",
+    "desc": "数据同步-计划物流",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_logistics",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select l.protocol_id as id, l.begin_time as start_time, l.end_time as end_time, l.target_province as province_code, l.target_province_name as province_name, l.target_city as city_code, l.target_city_name as city_name, l.target_area as area_code, l.target_area_name as area_name, l.target_address as address , l.target_contact_people as contact_people, l.target_contact_number as  contact_number, l.target_remark as remark from trade_protocol_logistics l where l.protocol_id = ?",
+        "biz.fields": [
+          "protocol_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_plan_logistics"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_plan_log",
+    "desc": "数据同步-计划日志",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_log",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, l.protocol_id as plan_id, l.content as log_content, l.create_user_id as operator_id, l.create_user_name as operator_name, l.create_company_id as operator_company_id, l.create_company_name as operator_company_name, l.log_type as log_type , l.create_time as row_create_time, l.create_time as row_update_time from trade_protocol_log l where l.order_log_type = 0 and l.protocol_log_id = ?",
+        "biz.fields": [
+          "protocol_log_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_plan_log"
         }
       }
     ]
