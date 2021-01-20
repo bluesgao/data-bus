@@ -7,6 +7,7 @@ import com.bluesgao.databus.core.handler.HandlerResult;
 import com.bluesgao.databus.core.handler.RuleHandler;
 import com.bluesgao.databus.core.rule.entity.Monitor;
 import com.bluesgao.databus.core.rule.entity.RuleCfg;
+import com.bluesgao.databus.plugin.common.enums.EventType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -37,14 +38,28 @@ public class MonitorHandler implements RuleHandler {
         return HandlerResult.fail(MonitorHandler.class.getName(), "没有匹配到需要监控的表、事件、字段");
     }
 
+    /**
+     * 新增、删除不关心字段
+     * 更新关心字段
+     *
+     * @param binlog
+     * @param monitor
+     * @return
+     */
     private boolean checkField(Binlog binlog, Monitor monitor) {
         boolean flag = false;
-        if (!CollectionUtils.isEmpty(monitor.getField())) {
-            //求子集
-            if (CollectionUtil.containsAll(getAllFieldName(binlog.getData()), monitor.getField())) {
+        if (binlog.getType().equalsIgnoreCase(EventType.UPDATE.getEvent())) {
+            if (CollectionUtils.isEmpty(monitor.getField())) {
                 flag = true;
             }
-        } else {
+            //求子集，从修改集合中获取
+            if (CollectionUtil.containsAll(getAllFieldName(binlog.getOld()), monitor.getField())) {
+                flag = true;
+            }
+
+        } else if (binlog.getType().equalsIgnoreCase(EventType.UPDATE.getEvent())) {
+            flag = true;
+        } else if (binlog.getType().equalsIgnoreCase(EventType.DELETE.getEvent())) {
             flag = true;
         }
         return flag;
