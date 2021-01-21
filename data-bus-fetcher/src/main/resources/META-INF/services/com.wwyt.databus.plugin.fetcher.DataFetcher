@@ -1,0 +1,3 @@
+com.wyyt.databus.fetcher.HttpFetcher
+com.wyyt.databus.fetcher.JdbcFetcher
+com.wyyt.databus.fetcher.custom.ProtocolFetcher

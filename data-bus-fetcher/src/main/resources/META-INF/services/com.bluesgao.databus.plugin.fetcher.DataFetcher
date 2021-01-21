@@ -1,3 +1,0 @@
-com.bluesgao.databus.fetcher.HttpFetcher
-com.bluesgao.databus.fetcher.JdbcFetcher
-com.bluesgao.databus.fetcher.custom.ProtocolFetcher

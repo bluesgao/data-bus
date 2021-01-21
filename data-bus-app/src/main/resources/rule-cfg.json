@@ -23,7 +23,7 @@
       }
     ],
     "fetcher": {
-      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
       "desc": "从mysql获取数据",
       "params": {
         "driverClassName": "com.mysql.jdbc.Driver",
@@ -38,7 +38,7 @@
     },
     "processor": [
       {
-        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
         "desc": "向mysql表写数据",
         "params": {
           "driverClassName": "com.mysql.jdbc.Driver",
@@ -83,7 +83,7 @@
       }
     ],
     "fetcher": {
-      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
       "desc": "从mysql获取数据",
       "params": {
         "driverClassName": "com.mysql.jdbc.Driver",
@@ -98,7 +98,7 @@
     },
     "processor": [
       {
-        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
         "desc": "向mysql表写数据",
         "params": {
           "driverClassName": "com.mysql.jdbc.Driver",
@@ -125,7 +125,7 @@
       }
     ],
     "fetcher": {
-      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
       "desc": "从mysql获取数据",
       "params": {
         "driverClassName": "com.mysql.jdbc.Driver",
@@ -140,7 +140,7 @@
     },
     "processor": [
       {
-        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
         "desc": "向mysql表写数据",
         "params": {
           "driverClassName": "com.mysql.jdbc.Driver",
@@ -167,7 +167,7 @@
       }
     ],
     "fetcher": {
-      "name": "com.bluesgao.databus.fetcher.JdbcFetcher",
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
       "desc": "从mysql获取数据",
       "params": {
         "driverClassName": "com.mysql.jdbc.Driver",
@@ -182,7 +182,7 @@
     },
     "processor": [
       {
-        "name": "com.bluesgao.databus.processor.JdbcProcessor",
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
         "desc": "向mysql表写数据",
         "params": {
           "driverClassName": "com.mysql.jdbc.Driver",
@@ -214,7 +214,7 @@
     },
     "processor": [
       {
-        "name": "com.bluesgao.databus.processor.custom.MlsPlanBusinessProcessor",
+        "name": "com.wyyt.databus.processor.custom.MlsPlanBusinessProcessor",
         "desc": "向mysql表写数据"
       }
     ]

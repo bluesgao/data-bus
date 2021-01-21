@@ -1,0 +1,4 @@
+com.wyyt.databus.processor.HttpProcessor
+com.wyyt.databus.processor.JdbcProcessor
+com.wyyt.databus.processor.RedisProcessor
+com.wyyt.databus.processor.custom.MlsPlanBusinessProcessor

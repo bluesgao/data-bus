@@ -13,13 +13,13 @@
     }
   ],
   "fetcher": {
-    "name": "com.bluesgao.databus.fetcher.ProtocolFetcher",
+    "name": "com.wyyt.databus.fetcher.ProtocolFetcher",
     "desc": "从mysql获取数据"
   },
   "processor": [
     {
-      "name": "com.bluesgao.databus.processor.ProtocolProcessor",
+      "name": "com.wyyt.databus.processor.ProtocolProcessor",
       "desc": "向mysql表写数据"
-    },
+    }
   ]
 }

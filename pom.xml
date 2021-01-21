@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bluesgao</groupId>
+    <groupId>com.wyyt</groupId>
     <artifactId>data-bus</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -27,12 +27,12 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.bluesgao</groupId>
+                <groupId>com.wyyt</groupId>
                 <artifactId>data-bus-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.bluesgao</groupId>
+                <groupId>com.wyyt</groupId>
                 <artifactId>data-bus-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
