@@ -1,7 +1,6 @@
 package com.bluesgao.databus.processor.custom;
 
 import com.alibaba.druid.util.JdbcUtils;
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.bluesgao.databus.ds.JdbcBuilder;
 import com.bluesgao.databus.ds.JdbcProps;
@@ -13,8 +12,11 @@ import com.bluesgao.databus.util.sql.SqlEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,45 +31,36 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
     @Override
     public DataProcessorResult process(Map<String, Object> params, String event, Map<String, Object> data) {
         log.info("MlsPlanBusinessProcessor ****开始处理****");
-        DataSource dataSource = buildDataSource(params);
-        if (event.equalsIgnoreCase(EventType.INSERT.getEvent())) {
+        Connection conn = getDataSourceConn(params);
+        if (conn == null) {
+            return DataProcessorResult.fail("获取数据连接conn错误");
+        }
 
-            String purchaseSql = buildInsertSqlByPURCHASE(data);
+        if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
+            String purchaseSql = existPURCHASE(conn, data) ? buildUpdateSqlByPURCHASE(data) : buildInsertSqlByPURCHASE(data);
+
             if (purchaseSql == null) {
-                return DataProcessorResult.fail("buildInsertSqlByPURCHASE生成sql失败");
+                return DataProcessorResult.fail("buildSqlByPURCHASE生成sql失败");
             }
-
-            String finSql = buildInsertSqlByFIN(data);
-            if (finSql == null) {
-                return DataProcessorResult.fail("buildInsertSqlByFIN生成sql失败");
-            }
-
             try {
-                JdbcUtils.execute(dataSource, purchaseSql);
-                JdbcUtils.execute(dataSource, finSql);
-                return DataProcessorResult.success();
+                JdbcUtils.execute(conn, purchaseSql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-        } else if (event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
-            String purchaseSql = buildUpdateSqlByPURCHASE(data);
-            if (purchaseSql == null) {
-                return DataProcessorResult.fail("buildUpdateSqlByPURCHASE生成sql失败");
-            }
+            String finSql = existFIN(conn, data) ? buildUpdateSqlByFIN(data) : buildInsertSqlByFIN(data);
 
-            String finSql = buildUpdateSqlByFIN(data);
             if (finSql == null) {
-                return DataProcessorResult.fail("buildUpdateSqlByFIN生成sql失败");
+                return DataProcessorResult.fail("buildSqlByFIN生成sql失败");
             }
-
             try {
-                JdbcUtils.execute(dataSource, purchaseSql);
-                JdbcUtils.execute(dataSource, finSql);
-                return DataProcessorResult.success();
+                JdbcUtils.execute(conn, finSql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            return DataProcessorResult.success();
+
         } else if (event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
             //todo
         }
@@ -78,6 +71,40 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
     @Override
     public String getName() {
         return MlsPlanBusinessProcessor.class.getCanonicalName();
+    }
+
+    private boolean existPURCHASE(Connection connection, Map<String, Object> data) {
+        //判断数据是否存在
+        List<Object> queryParams = new ArrayList<>();
+        queryParams.add(data.get("protocol_id"));
+        queryParams.add(data.get("order_company_id"));
+        List<Map<String, Object>> queryResult = null;
+        try {
+            queryResult = JdbcUtils.executeQuery(connection, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (queryResult != null && queryResult.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean existFIN(Connection connection, Map<String, Object> data) {
+        //判断数据是否存在
+        List<Object> queryParams = new ArrayList<>();
+        queryParams.add(data.get("protocol_id"));
+        queryParams.add(data.get("fin_company_id"));
+        List<Map<String, Object>> queryResult = null;
+        try {
+            queryResult = JdbcUtils.executeQuery(connection, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (queryResult != null && queryResult.size() > 0) {
+            return true;
+        }
+        return false;
     }
 
     private String buildInsertSqlByPURCHASE(Map<String, Object> data) {
@@ -99,13 +126,13 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         }
 
         //添加固定值
-        fieldAndValues.put("id", "UUID_SHORT()");
+        //fieldAndValues.put("id", UUID.randomUUID().getLeastSignificantBits());
         fieldAndValues.put("buyer_company_type", "PURCHASE");
         fieldAndValues.put("seller_company_type", "FIN");
         //fieldAndValues.put("business_type", 0);
         fieldAndValues.put("business_module", 0);
 
-        SqlEntity insertSqlEntity = new SqlEntity("mls_plan_business", fieldAndValues, null);
+        SqlEntity insertSqlEntity = new SqlEntity("mls_plan_business", fieldAndValues, null, true);
         return SqlBuilder.insert(insertSqlEntity);
     }
 
@@ -135,7 +162,7 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         //fieldAndValues.put("business_type", 0);
         fieldAndValues.put("business_module", 1);
 
-        SqlEntity insertSqlEntity = new SqlEntity("mls_plan_business", fieldAndValues, null);
+        SqlEntity insertSqlEntity = new SqlEntity("mls_plan_business", fieldAndValues, null, true);
         return SqlBuilder.insert(insertSqlEntity);
     }
 
@@ -207,13 +234,20 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         return SqlBuilder.update(sqlEntity);
     }
 
-    private DataSource buildDataSource(Map<String, Object> params) {
+    private Connection getDataSourceConn(Map<String, Object> params) {
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
         jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
         jdbcProps.setUsername("zyc");
         jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
-        return JdbcBuilder.build(jdbcProps);
+        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
+        }
+        return conn;
     }
 
     private Map<String, Object> populateFieldAndValues(Map<String, String> fieldMappings, Map<String, Object> data) {
@@ -231,54 +265,5 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
             }
         }
         return fieldAndValues;
-    }
-
-    private String upsertSql(String table, Map<String, Object> data) {
-        if (StringUtils.isEmpty(table) || data == null || data.size() == 0) {
-            return null;
-        }
-        StringBuilder sql = new StringBuilder();
-        //组装sql insert into t_user(id,name) values(12,test);
-        sql.append("insert into ").append(table).append(" (");
-
-        StringBuilder values = new StringBuilder(" values(");
-        int i = 0;
-        for (String key : data.keySet()) {
-            Object value = data.get(key);
-            if (value != null) {
-                sql.append(key);
-                values.append("'" + value + "'");
-                //values.append(value);
-
-                if (i < data.keySet().size() - 1) {
-                    sql.append(", ");
-                    values.append(", ");
-                }
-            }
-            i++;
-        }
-        sql.append(") ");
-        values.append(")");
-        sql.append(values);
-
-        //update
-        int j = 0;
-        sql.append(" ON DUPLICATE KEY UPDATE ");
-        for (String key : data.keySet()) {
-            Object value = data.get(key);
-            if (value != null) {
-                sql.append(key);
-                sql.append(" = ");
-                sql.append("'" + value + "'");
-                //sql.append(value);
-
-                if (j < data.keySet().size() - 1) {
-                    sql.append(" , ");
-                }
-            }
-            j++;
-        }
-        log.info("组装sql:{}", sql.toString());
-        return sql.toString();
     }
 }

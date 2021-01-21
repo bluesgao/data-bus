@@ -2,7 +2,6 @@ package com.bluesgao.databus.util.sql;
 
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 
@@ -10,11 +9,17 @@ public class SqlEntity implements Serializable {
     private String tableName;
     private Map<String, Object> fieldAndValues;
     private Map<String, Object> whereAndValues;
+    private Boolean uuidAsPk;
 
     public SqlEntity(String tableName, Map<String, Object> fieldAndValues, Map<String, Object> whereAndValues) {
+        this(tableName, fieldAndValues, whereAndValues, false);
+    }
+
+    public SqlEntity(String tableName, Map<String, Object> fieldAndValues, Map<String, Object> whereAndValues, Boolean uuidAsPk) {
         this.tableName = tableName;
         this.fieldAndValues = fieldAndValues;
         this.whereAndValues = whereAndValues;
+        this.uuidAsPk = uuidAsPk;
     }
 
     public String getTableName() {
@@ -41,12 +46,21 @@ public class SqlEntity implements Serializable {
         this.whereAndValues = whereAndValues;
     }
 
+    public Boolean getUuidAsPk() {
+        return uuidAsPk;
+    }
+
+    public void setUuidAsPk(Boolean uuidAsPk) {
+        this.uuidAsPk = uuidAsPk;
+    }
+
     @Override
     public String toString() {
         return "SqlEntity{" +
                 "tableName='" + tableName + '\'' +
                 ", fieldAndValues=" + fieldAndValues +
                 ", whereAndValues=" + whereAndValues +
+                ", uuidAsPk=" + uuidAsPk +
                 '}';
     }
 }

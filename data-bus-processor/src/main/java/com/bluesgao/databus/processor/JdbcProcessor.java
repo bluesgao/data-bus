@@ -1,6 +1,7 @@
 package com.bluesgao.databus.processor;
 
 import com.alibaba.druid.util.JdbcUtils;
+import com.alibaba.fastjson.JSON;
 import com.bluesgao.databus.ds.JdbcBuilder;
 import com.bluesgao.databus.ds.JdbcProps;
 import com.bluesgao.databus.plugin.common.constants.JdbcCfgConstants;
@@ -12,6 +13,7 @@ import com.bluesgao.databus.util.sql.SqlEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +41,10 @@ public class JdbcProcessor implements DataProcessor {
             }
         }
 
-        JdbcProps jdbcProps = new JdbcProps();
-        jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
-        jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
-        jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
-        jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
-
-        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+        Connection conn = getDataSourceConn(params);
+        if (conn == null) {
+            return DataProcessorResult.fail("获取数据连接conn错误");
+        }
 
         String table = params.get(JdbcCfgConstants.biz_table).toString();
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
@@ -57,7 +56,7 @@ public class JdbcProcessor implements DataProcessor {
                 if (sql == null) {
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }
-                JdbcUtils.execute(dataSource, sql);
+                JdbcUtils.execute(conn, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -77,7 +76,7 @@ public class JdbcProcessor implements DataProcessor {
                 if (sql == null) {
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
-                JdbcUtils.execute(dataSource, sql);
+                JdbcUtils.execute(conn, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -89,6 +88,29 @@ public class JdbcProcessor implements DataProcessor {
     @Override
     public String getName() {
         return JdbcProcessor.class.getCanonicalName();
+    }
+
+
+    /**
+     * 获取数据库连接
+     *
+     * @param params
+     * @return
+     */
+    private Connection getDataSourceConn(Map<String, Object> params) {
+        JdbcProps jdbcProps = new JdbcProps();
+        jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
+        jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
+        jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
+        jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
+        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
+        }
+        return conn;
     }
 
     /**
@@ -114,89 +136,5 @@ public class JdbcProcessor implements DataProcessor {
             err.append("biz_fields为空;");
         }*/
         return err.toString();
-    }
-
-    private Map<String, Object> getParamValue(Map<String, Object> data, List<String> paramFields) {
-        Map<String, Object> fieldValues = new HashMap<>(8);
-        for (String field : paramFields) {
-            Object value = data.get(field);
-            fieldValues.put(field, value);
-        }
-        return fieldValues;
-    }
-
-    private String deleteSql(String table, Map<String, Object> fieldValues) {
-        if (table == null || table.length() == 0 || fieldValues == null || fieldValues.size() == 0) {
-            return null;
-        }
-
-        //DELETE FROM runoob_tbl WHERE runoob_id=3 and name='test';
-        StringBuilder sql = new StringBuilder("DELETE FROM ");
-        sql.append(table);
-        sql.append(" WHERE ");
-        int i = 0;
-        for (String key : fieldValues.keySet()) {
-            sql.append(key);
-            sql.append(" = ");
-            sql.append(fieldValues.get(key));
-            if (i <= fieldValues.keySet().size() - 1) {
-                sql.append(" AND ");
-            }
-            i++;
-        }
-        sql.append(" ; ");
-
-        return sql.toString();
-    }
-
-    private String upsertSql(String table, Map<String, Object> data) {
-        if (table == null || table.length() == 0 || data == null || data.size() == 0) {
-            return null;
-        }
-        StringBuilder sql = new StringBuilder();
-        //组装sql insert into t_user(id,name) values(12,test);
-        sql.append("insert into ").append(table).append(" (");
-
-        StringBuilder values = new StringBuilder(" values(");
-        int i = 0;
-        for (String key : data.keySet()) {
-            Object value = data.get(key);
-            if (value != null) {
-                sql.append(key);
-                values.append("'" + value + "'");
-                //values.append(value);
-
-                if (i < data.keySet().size() - 1) {
-                    sql.append(", ");
-                    values.append(", ");
-                }
-            }
-            i++;
-        }
-
-
-        sql.append(") ");
-        values.append(")");
-        sql.append(values);
-
-        //update
-        int j = 0;
-        sql.append(" ON DUPLICATE KEY UPDATE ");
-        for (String key : data.keySet()) {
-            Object value = data.get(key);
-            if (value != null) {
-                sql.append(key);
-                sql.append(" = ");
-                sql.append("'" + value + "'");
-                //biz_sql.append(value);
-
-                if (j < data.keySet().size() - 1) {
-                    sql.append(" , ");
-                }
-            }
-            j++;
-        }
-        log.info("组装sql:{}", sql.toString());
-        return sql.toString();
     }
 }

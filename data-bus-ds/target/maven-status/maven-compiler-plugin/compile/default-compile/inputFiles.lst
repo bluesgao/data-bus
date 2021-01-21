@@ -1,7 +1,0 @@
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/RedisProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/EsProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/JdbcProps.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/RedisBuilder.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/EsBuilder.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/JdbcUtils.java
-/Users/bluesgao/IdeaProjects/sjb/data-bus/data-bus-ds/src/main/java/com/bluesgao/databus/ds/JdbcBuilder.java

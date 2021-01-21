@@ -1,5 +1,0 @@
-com/bluesgao/databus/processor/custom/ProtocolProcessor.class
-com/bluesgao/databus/processor/custom/MlsPlanBusinessProcessor.class
-com/bluesgao/databus/processor/RedisProcessor.class
-com/bluesgao/databus/processor/HttpProcessor.class
-com/bluesgao/databus/processor/JdbcProcessor.class

@@ -31,9 +31,15 @@ public class SqlBuilder {
                 }
             }
         }
-        sql.append("INSERT INTO ")//
-                .append(entity.getTableName()).append(" (").append(fieldsPart).append(") VALUES (")//
-                .append(valuesPart.toString()).append(")");
+        if (!entity.getUuidAsPk()) {
+            sql.append("INSERT INTO ")//
+                    .append(entity.getTableName()).append(" (").append(fieldsPart).append(") VALUES (")//
+                    .append(valuesPart.toString()).append(")");
+        }else {
+            sql.append("INSERT INTO ")//
+                    .append(entity.getTableName()).append(" ( id, ").append(fieldsPart).append(") VALUES ( UUID_SHORT(), ")//
+                    .append(valuesPart.toString()).append(")");
+        }
 
         return sql.toString();
     }

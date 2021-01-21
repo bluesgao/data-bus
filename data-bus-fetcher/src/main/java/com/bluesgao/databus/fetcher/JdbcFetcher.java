@@ -1,6 +1,7 @@
 package com.bluesgao.databus.fetcher;
 
 import com.alibaba.druid.util.JdbcUtils;
+import com.alibaba.fastjson.JSON;
 import com.bluesgao.databus.ds.JdbcBuilder;
 import com.bluesgao.databus.ds.JdbcProps;
 import com.bluesgao.databus.plugin.common.constants.JdbcCfgConstants;
@@ -9,6 +10,7 @@ import com.bluesgao.databus.plugin.fetcher.DataFetcherResult;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,20 +44,16 @@ public class JdbcFetcher implements DataFetcher {
          *       "biz.fields":"user_id"
          */
 
-        JdbcProps jdbcProps = new JdbcProps();
-        jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
-        jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
-        jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
-        jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
-
-
-        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+        Connection conn = getDataSourceConn(params);
+        if (conn == null) {
+            return DataFetcherResult.fail("获取数据连接conn错误");
+        }
 
         List<Map<String, Object>> dataList = null;
         try {
             List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields));
             String script = params.get(JdbcCfgConstants.biz_sql).toString();
-            dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
+            dataList = JdbcUtils.executeQuery(conn, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,6 +68,28 @@ public class JdbcFetcher implements DataFetcher {
     @Override
     public String getName() {
         return JdbcFetcher.class.getCanonicalName();
+    }
+
+    /**
+     * 获取数据库连接
+     *
+     * @param params
+     * @return
+     */
+    private Connection getDataSourceConn(Map<String, Object> params) {
+        JdbcProps jdbcProps = new JdbcProps();
+        jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
+        jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
+        jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
+        jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
+        DataSource dataSource = JdbcBuilder.build(jdbcProps);
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
+        }
+        return conn;
     }
 
     private String checkParams(Map<String, Object> params) {
