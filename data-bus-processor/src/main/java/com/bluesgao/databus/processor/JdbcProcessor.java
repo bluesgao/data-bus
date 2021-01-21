@@ -3,10 +3,12 @@ package com.bluesgao.databus.processor;
 import com.alibaba.druid.util.JdbcUtils;
 import com.bluesgao.databus.ds.JdbcBuilder;
 import com.bluesgao.databus.ds.JdbcProps;
-import com.bluesgao.databus.plugin.common.enums.EventType;
 import com.bluesgao.databus.plugin.common.constants.JdbcCfgConstants;
+import com.bluesgao.databus.plugin.common.enums.EventType;
 import com.bluesgao.databus.plugin.processor.DataProcessor;
 import com.bluesgao.databus.plugin.processor.DataProcessorResult;
+import com.bluesgao.databus.util.sql.SqlBuilder;
+import com.bluesgao.databus.util.sql.SqlEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
@@ -27,6 +29,8 @@ public class JdbcProcessor implements DataProcessor {
 
     @Override
     public DataProcessorResult process(Map<String, Object> params, String event, Map<String, Object> data) {
+        log.info("JdbcProcessor ****开始处理****");
+
         if (params != null && params.size() > 0) {
             //进行参数验证
             String checkResult = checkParams(params);
@@ -47,7 +51,9 @@ public class JdbcProcessor implements DataProcessor {
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
             log.info("INSERT OR UPDATE 处理中");
             try {
-                String sql = upsertSql(table, data);
+                //String sql = upsertSql(table, data);
+                SqlEntity entity = new SqlEntity(table, data, null);
+                String sql = SqlBuilder.upsert(entity);
                 if (sql == null) {
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }
@@ -59,7 +65,15 @@ public class JdbcProcessor implements DataProcessor {
         } else if (event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
             log.info("DELETE 处理中");
             try {
-                String sql = deleteSql(table, getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields)));
+                //String sql = deleteSql(table, getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields)));
+
+                Map<String, Object> whereFieldAndVaules = new HashMap<>(8);
+                for (String field : (List<String>) params.get(JdbcCfgConstants.biz_fields)) {
+                    whereFieldAndVaules.put(field, data.get(field));
+                }
+
+                SqlEntity entity = new SqlEntity(table, null, whereFieldAndVaules);
+                String sql = SqlBuilder.delete(entity);
                 if (sql == null) {
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
@@ -159,6 +173,8 @@ public class JdbcProcessor implements DataProcessor {
             }
             i++;
         }
+
+
         sql.append(") ");
         values.append(")");
         sql.append(values);

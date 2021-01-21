@@ -22,6 +22,7 @@ public class HttpProcessor implements DataProcessor {
 
     @Override
     public DataProcessorResult process(Map<String, Object> params, String event, Map<String, Object> data) {
+        log.info("HttpProcessor ****开始处理****");
         if (params != null && params.size() > 0) {
             //进行参数验证
             String checkResult = checkParams(params);

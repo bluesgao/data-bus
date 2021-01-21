@@ -2,6 +2,7 @@ package com.bluesgao.databus.util.sql;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 

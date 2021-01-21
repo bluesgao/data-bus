@@ -24,9 +24,10 @@ public class ProcessorHandler implements RuleHandler {
                 return HandlerResult.fail(ProcessorHandler.class.getName(), String.format("未找到指定的dataProcessor[%s]", processor.getName()));
             }
             DataProcessorResult ret = dataProcessor.process(processor.getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
+            log.info("数据处理-处理器[{}]处理结果[{}]", processor.getName(), ret);
             if (ret == null || !ret.getSuccess()) {
                 //指定的dataProcessor处理失败
-                return HandlerResult.fail(ProcessorHandler.class.getName(), String.format("指定的dataProcessor[%s]处理失败,原因[%s]", processor.getName(), ret.getMsg()));
+                return HandlerResult.fail(processor.getName(), String.format("指定的dataProcessor[%s]处理失败,原因[%s]", processor.getName(), ret.getMsg()));
             }
         }
 

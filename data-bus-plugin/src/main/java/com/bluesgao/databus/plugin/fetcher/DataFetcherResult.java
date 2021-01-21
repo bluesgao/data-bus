@@ -40,4 +40,13 @@ public class DataFetcherResult implements Serializable {
     public Map<String, Object> getData() {
         return data;
     }
+
+    @Override
+    public String toString() {
+        return "DataFetcherResult{" +
+                "success=" + success +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

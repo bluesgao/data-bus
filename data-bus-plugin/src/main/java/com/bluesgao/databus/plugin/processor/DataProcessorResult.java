@@ -44,4 +44,13 @@ public class DataProcessorResult implements Serializable {
     public String getMsg() {
         return msg;
     }
+
+    @Override
+    public String toString() {
+        return "DataProcessorResult{" +
+                "success=" + success +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
