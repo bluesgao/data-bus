@@ -19,15 +19,12 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.VersionType;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.script.Script;
-import org.elasticsearch.script.ScriptType;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * @ClassName：ElasticSearchProcessor
@@ -57,7 +54,7 @@ public class ElasticSearchProcessor implements DataProcessor {
 
         String index = params.get(EsCfgConstants.index).toString();
 
-        if (!checkIndexExist(esClient, index)) {
+        if (!indexExist(esClient, index)) {
             //关闭 es client
             closeElasticSearchClient(esClient);
             return DataProcessorResult.fail(String.format("es index不存在[%s]", JSON.toJSON(index)));
@@ -89,7 +86,7 @@ public class ElasticSearchProcessor implements DataProcessor {
      * @param index
      * @return
      */
-    private boolean checkIndexExist(RestHighLevelClient esClient, String index) {
+    private boolean indexExist(RestHighLevelClient esClient, String index) {
         GetRequest getRequest = new GetRequest();
         getRequest.index(index);
         boolean ret = false;
@@ -130,14 +127,18 @@ public class ElasticSearchProcessor implements DataProcessor {
         }
     }
 
-    private void updateDoc(RestHighLevelClient client, String index, String docId, Map<String, Object> data) {
+    private void upsertDoc(RestHighLevelClient client, String index, String docId, long version, Map<String, Object> data) {
         // 1、创建索引请求  //索引  // mapping type  //文档id
         UpdateRequest request = new UpdateRequest(index, docId);
-        Map<String, Object> parameters = singletonMap("count", 4);
+/*        Map<String, Object> parameters = singletonMap("count", 4);
 
         Script inline = new Script(ScriptType.INLINE, Script.DEFAULT_SCRIPT_LANG,
                 "ctx._source.field += params.count", parameters);
-        request.script(inline);
+        request.script(inline);*/
+        request.docAsUpsert(true);
+        request.doc(data);
+        request.version(version);
+        request.versionType(VersionType.EXTERNAL);
 
         try {
             UpdateResponse updateResponse = client.update(request, RequestOptions.DEFAULT);
