@@ -6,14 +6,26 @@ import lombok.extern.slf4j.Slf4j;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Slf4j
 public class JdbcBuilder {
+    /*jdbc客户端*/
+    private static Map<String, DataSource> JDBC_HOLDER = new ConcurrentHashMap<>(16);
+
 
     public static DataSource build(JdbcProps props) {
-        DataSource dataSource = null;
+        if (JDBC_HOLDER.containsKey(props.getUrl())) {
+            return JDBC_HOLDER.get(props.getUrl());
+        }
+        return JdbcBuilder.createDataSource(props);
+    }
+
+    private static synchronized DataSource createDataSource(JdbcProps props) {
         Map<String, Object> cfgMap = new HashMap<>(16);
+        DataSource dataSource = null;
+
         //基本属性 url、user、password
         cfgMap.put("url", props.getUrl());
         cfgMap.put("driverClassName", props.getDriverClassName());
@@ -36,7 +48,8 @@ public class JdbcBuilder {
         }
 
         if (dataSource != null) {
-            return dataSource;
+            JDBC_HOLDER.put(props.getUrl(), dataSource);
+            return JDBC_HOLDER.get(props.getUrl());
         }
         return null;
     }
