@@ -12,7 +12,6 @@ import com.wyyt.databus.util.sql.SqlEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
