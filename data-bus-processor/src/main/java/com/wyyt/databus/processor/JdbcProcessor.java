@@ -1,7 +1,6 @@
 package com.wyyt.databus.processor;
 
 import com.alibaba.druid.util.JdbcUtils;
-import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.plugin.common.constants.JdbcCfgConstants;
 import com.wwyt.databus.plugin.common.enums.EventType;
 import com.wwyt.databus.plugin.processor.DataProcessor;
@@ -13,7 +12,6 @@ import com.wyyt.databus.util.sql.SqlEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +39,8 @@ public class JdbcProcessor implements DataProcessor {
             }
         }
 
-        Connection conn = getDataSourceConn(params);
-        if (conn == null) {
+        DataSource dataSource = getDataSource(params);
+        if (dataSource == null) {
             return DataProcessorResult.fail("获取数据连接conn错误");
         }
 
@@ -53,12 +51,12 @@ public class JdbcProcessor implements DataProcessor {
                 //String sql = upsertSql(table, data);
                 SqlEntity entity = new SqlEntity(table, data, null);
                 String sql = SqlBuilder.upsert(entity);
-                log.info("INSERT OR UPDATE upsertSql:{}",sql);
+                log.info("INSERT OR UPDATE upsertSql:{}", sql);
 
                 if (sql == null) {
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }
-                JdbcUtils.execute(conn, sql);
+                JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -78,7 +76,7 @@ public class JdbcProcessor implements DataProcessor {
                 if (sql == null) {
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
-                JdbcUtils.execute(conn, sql);
+                JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -92,27 +90,20 @@ public class JdbcProcessor implements DataProcessor {
         return JdbcProcessor.class.getCanonicalName();
     }
 
-
     /**
      * 获取数据库连接
      *
      * @param params
      * @return
      */
-    private Connection getDataSourceConn(Map<String, Object> params) {
+    private DataSource getDataSource(Map<String, Object> params) {
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
         jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
         jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
         jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
-        }
-        return conn;
+        return dataSource;
     }
 
     /**

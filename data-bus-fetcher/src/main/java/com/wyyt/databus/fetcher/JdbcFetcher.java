@@ -44,8 +44,8 @@ public class JdbcFetcher implements DataFetcher {
          *       "biz.fields":"user_id"
          */
 
-        Connection conn = getDataSourceConn(params);
-        if (conn == null) {
+        DataSource dataSource = getDataSource(params);
+        if (dataSource == null) {
             return DataFetcherResult.fail("获取数据连接conn错误");
         }
 
@@ -53,7 +53,7 @@ public class JdbcFetcher implements DataFetcher {
         try {
             List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields));
             String script = params.get(JdbcCfgConstants.biz_sql).toString();
-            dataList = JdbcUtils.executeQuery(conn, script, queryParams);
+            dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,20 +76,14 @@ public class JdbcFetcher implements DataFetcher {
      * @param params
      * @return
      */
-    private Connection getDataSourceConn(Map<String, Object> params) {
+    private DataSource getDataSource(Map<String, Object> params) {
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName(params.get(JdbcCfgConstants.driverClassName).toString());
         jdbcProps.setUrl(params.get(JdbcCfgConstants.url).toString());
         jdbcProps.setUsername(params.get(JdbcCfgConstants.username).toString());
         jdbcProps.setPassword(params.get(JdbcCfgConstants.password).toString());
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
-        }
-        return conn;
+        return dataSource;
     }
 
     private String checkParams(Map<String, Object> params) {

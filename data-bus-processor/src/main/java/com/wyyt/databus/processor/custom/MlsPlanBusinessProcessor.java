@@ -31,30 +31,30 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
     @Override
     public DataProcessorResult process(Map<String, Object> params, String event, Map<String, Object> data) {
         log.info("MlsPlanBusinessProcessor ****开始处理****");
-        Connection conn = getDataSourceConn(params);
-        if (conn == null) {
+        DataSource dataSource = getDataSourceConn(params);
+        if (dataSource == null) {
             return DataProcessorResult.fail("获取数据连接conn错误");
         }
 
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
-            String purchaseSql = existPURCHASE(conn, data) ? buildUpdateSqlByPURCHASE(data) : buildInsertSqlByPURCHASE(data);
+            String purchaseSql = existPURCHASE(dataSource, data) ? buildUpdateSqlByPURCHASE(data) : buildInsertSqlByPURCHASE(data);
 
             if (purchaseSql == null) {
                 return DataProcessorResult.fail("buildSqlByPURCHASE生成sql失败");
             }
             try {
-                JdbcUtils.execute(conn, purchaseSql);
+                JdbcUtils.execute(dataSource, purchaseSql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-            String finSql = existFIN(conn, data) ? buildUpdateSqlByFIN(data) : buildInsertSqlByFIN(data);
+            String finSql = existFIN(dataSource, data) ? buildUpdateSqlByFIN(data) : buildInsertSqlByFIN(data);
 
             if (finSql == null) {
                 return DataProcessorResult.fail("buildSqlByFIN生成sql失败");
             }
             try {
-                JdbcUtils.execute(conn, finSql);
+                JdbcUtils.execute(dataSource, finSql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -73,14 +73,14 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         return MlsPlanBusinessProcessor.class.getCanonicalName();
     }
 
-    private boolean existPURCHASE(Connection connection, Map<String, Object> data) {
+    private boolean existPURCHASE(DataSource dataSource, Map<String, Object> data) {
         //判断数据是否存在
         List<Object> queryParams = new ArrayList<>();
         queryParams.add(data.get("protocol_id"));
         queryParams.add(data.get("order_company_id"));
         List<Map<String, Object>> queryResult = null;
         try {
-            queryResult = JdbcUtils.executeQuery(connection, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
+            queryResult = JdbcUtils.executeQuery(dataSource, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -90,14 +90,14 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         return false;
     }
 
-    private boolean existFIN(Connection connection, Map<String, Object> data) {
+    private boolean existFIN(DataSource dataSource, Map<String, Object> data) {
         //判断数据是否存在
         List<Object> queryParams = new ArrayList<>();
         queryParams.add(data.get("protocol_id"));
         queryParams.add(data.get("fin_company_id"));
         List<Map<String, Object>> queryResult = null;
         try {
-            queryResult = JdbcUtils.executeQuery(connection, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
+            queryResult = JdbcUtils.executeQuery(dataSource, "select * from mls_plan_business where plan_id=? and buyer_company_id=?", queryParams);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -234,20 +234,14 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         return SqlBuilder.update(sqlEntity);
     }
 
-    private Connection getDataSourceConn(Map<String, Object> params) {
+    private DataSource getDataSourceConn(Map<String, Object> params) {
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
         jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
         jdbcProps.setUsername("zyc");
         jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-        } catch (SQLException e) {
-            log.error("获取数据库conn错误,连接信息[{}],异常[{}]", JSON.toJSONString(jdbcProps), e);
-        }
-        return conn;
+        return dataSource;
     }
 
     private Map<String, Object> populateFieldAndValues(Map<String, String> fieldMappings, Map<String, Object> data) {
