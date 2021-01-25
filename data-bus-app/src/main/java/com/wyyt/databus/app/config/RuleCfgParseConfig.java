@@ -1,9 +1,7 @@
 package com.wyyt.databus.app.config;
 
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.core.rule.RuleCfgHolder;
-import com.wwyt.databus.core.rule.RuleCfgValidor;
 import com.wwyt.databus.core.rule.entity.RuleCfg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -97,13 +91,13 @@ public class RuleCfgParseConfig {
         String ruleStr = null;
         try {
             byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
-            ruleStr = new String(bytes,StandardCharsets.UTF_8);
+            ruleStr = new String(bytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        log.info("ruleStr:{}",ruleStr);
+        log.info("ruleStr:{}", ruleStr);
 
-        if (ruleStr==null || ruleStr.length()<=0){
+        if (ruleStr == null || ruleStr.length() <= 0) {
             throw new RuntimeException("rule-cfg文件读取失败");
         }
         //文件解析
@@ -115,10 +109,11 @@ public class RuleCfgParseConfig {
             throw new RuntimeException("rule-cfg文件解析失败", e);
 
         }
+        log.info("rule-cfg文件解析:{}", JSON.toJSONString(ruleCfgList));
 
         for (RuleCfg ruleCfg : ruleCfgList) {
             // 验证配置是否合法
-            RuleCfgValidor.isValid(ruleCfg);
+            //RuleCfgValidor.isValid(ruleCfg);
             RuleCfgHolder.putRuleCfg(ruleCfg);
         }
 
