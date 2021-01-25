@@ -100,7 +100,7 @@
                 <version>2.2-beta-5</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
                     <descriptor>src/main/resources/assembly/assembly.xml</descriptor>
-                    <finalName>${project.artifactId}</finalName>
+                    <finalName>wyyt-data-bus-service</finalName>
                 </configuration>
                 <executions>
                     <execution>
