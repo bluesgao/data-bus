@@ -1,5 +1,6 @@
 package com.wyyt.databus.app.config;
 
+import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.core.rule.RuleCfgHolder;
 import com.wwyt.databus.core.rule.RuleCfgValidor;
@@ -13,6 +14,7 @@ import org.springframework.core.io.Resource;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
@@ -55,16 +57,18 @@ public class RuleCfgParseConfig {
         InputStreamReader input = null;
         BufferedReader br = null;
         try {
-            Resource resource = new ClassPathResource(rulePath);
-            log.info("resource:{}",JSON.toJSONString(resource));
-            log.info("配置文件路径:{}",resource.getFile().getAbsoluteFile());
+            //Resource resource = new ClassPathResource(rulePath);
+            //log.info("resource:{}",JSON.toJSONString(resource));
+            //log.info("配置文件路径:{}",resource.getFile().getAbsoluteFile());
 
-            input = new InputStreamReader(resource.getInputStream());
+            //input = new InputStreamReader(resource.getInputStream());
+            input = new InputStreamReader(this.getClass().getResourceAsStream(rulePath));
             br = new BufferedReader(input);
             String str = null;
             while ((str = br.readLine()) != null) {
                 ruleStr.append(str);
             }
+
 
         } catch (Exception e) {
             log.error("rule-cfg文件读取失败", e.getMessage());
