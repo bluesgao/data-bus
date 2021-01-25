@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -51,15 +53,12 @@ public class RuleCfgParseConfig {
                 }
             }
         });*/
-
         //文件读取
-        StringBuilder ruleStr = new StringBuilder();
+/*        StringBuilder ruleStr = new StringBuilder();
         InputStreamReader input = null;
         BufferedReader br = null;
         try {
-            //Resource resource = new ClassPathResource(rulePath);
-            //log.info("resource:{}",JSON.toJSONString(resource));
-            //log.info("配置文件路径:{}",resource.getFile().getAbsoluteFile());
+            log.info("配置文件路径:{}",resource.getFile().getAbsoluteFile());
 
             //input = new InputStreamReader(resource.getInputStream());
             input = new InputStreamReader(this.getClass().getResourceAsStream(rulePath));
@@ -68,6 +67,8 @@ public class RuleCfgParseConfig {
             while ((str = br.readLine()) != null) {
                 ruleStr.append(str);
             }
+
+
 
 
         } catch (Exception e) {
@@ -88,15 +89,27 @@ public class RuleCfgParseConfig {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
-        if (ruleStr==null || ruleStr.toString().length()<=0){
+
+        Resource resource = new ClassPathResource(rulePath);
+
+        String ruleStr = null;
+        try {
+            byte[] bytes = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            ruleStr = new String(bytes,StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        log.info("ruleStr:{}",ruleStr);
+
+        if (ruleStr==null || ruleStr.length()<=0){
             throw new RuntimeException("rule-cfg文件读取失败");
         }
         //文件解析
         List<RuleCfg> ruleCfgList = null;
         try {
-            ruleCfgList = JSON.parseArray(ruleStr.toString(), RuleCfg.class);
+            ruleCfgList = JSON.parseArray(ruleStr, RuleCfg.class);
         } catch (Exception e) {
             log.error("rule-cfg文件解析失败", e.getMessage());
             throw new RuntimeException("rule-cfg文件解析失败", e);
