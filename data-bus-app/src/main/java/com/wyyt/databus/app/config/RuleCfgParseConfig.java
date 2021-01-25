@@ -56,6 +56,9 @@ public class RuleCfgParseConfig {
         BufferedReader br = null;
         try {
             Resource resource = new ClassPathResource(rulePath);
+            log.info("resource:{}",JSON.toJSONString(resource));
+            log.info("配置文件路径:{}",resource.getFile().getAbsoluteFile());
+
             input = new InputStreamReader(resource.getInputStream());
             br = new BufferedReader(input);
             String str = null;
@@ -83,6 +86,9 @@ public class RuleCfgParseConfig {
             }
         }
 
+        if (ruleStr==null || ruleStr.toString().length()<=0){
+            throw new RuntimeException("rule-cfg文件读取失败");
+        }
         //文件解析
         List<RuleCfg> ruleCfgList = null;
         try {
