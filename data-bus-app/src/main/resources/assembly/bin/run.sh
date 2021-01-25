@@ -8,7 +8,7 @@ if [ -z $APP_HOME ]; then
 fi
 
 APP_MAINCLASS=$2
-LOGPATH=/wyyt/logs/dubbo/databus-service
+LOGPATH=/wyyt/logs/dubbo/wyyt-data-bus-service
 
 #CLASSPATH=$APP_HOME/conf
 for i in "$APP_HOME"/lib/*.jar; do
