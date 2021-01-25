@@ -1,6 +1,6 @@
 package com.wwyt.databus.core.handler.impl;
 
-import com.wwyt.databus.core.binlog.BinlogWrapper;
+import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.handler.HandlerResult;
 import com.wwyt.databus.core.handler.RuleHandler;
 import com.wwyt.databus.core.plugin.DataProcessorManager;
@@ -14,8 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ProcessorHandler implements RuleHandler {
 
     @Override
-    public HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg) {
-        log.info("数据处理-处理器：binlogWrapper:{},ruleCfg:{}", binlogWrapper, ruleCfg);
+    public HandlerResult handle(BinlogItemWrapper binlogItemWrapper, RuleCfg ruleCfg) {
+        log.info("数据处理-处理器：binlogItemWrapper:{},ruleCfg:{}", binlogItemWrapper, ruleCfg);
 
         for (Processor processor : ruleCfg.getProcessor()) {
             DataProcessor dataProcessor = DataProcessorManager.get(processor.getName());
@@ -23,7 +23,7 @@ public class ProcessorHandler implements RuleHandler {
                 //未找到指定的dataProcessor
                 return HandlerResult.fail(ProcessorHandler.class.getName(), String.format("未找到指定的dataProcessor[%s]", processor.getName()));
             }
-            DataProcessorResult ret = dataProcessor.process(processor.getParams(), binlogWrapper.getBinlog().getType(), binlogWrapper.getData());
+            DataProcessorResult ret = dataProcessor.process(processor.getParams(), binlogItemWrapper.getBinlogItem().getType(), binlogItemWrapper.getData());
             log.info("数据处理-处理器[{}]处理结果[{}]", processor.getName(), ret);
             if (ret == null || !ret.getSuccess()) {
                 //指定的dataProcessor处理失败

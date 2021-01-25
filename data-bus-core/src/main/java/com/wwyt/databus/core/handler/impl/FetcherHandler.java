@@ -1,6 +1,7 @@
 package com.wwyt.databus.core.handler.impl;
 
-import com.wwyt.databus.core.binlog.BinlogWrapper;
+import com.wwyt.databus.core.binlog.BinlogItem;
+import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.handler.HandlerResult;
 import com.wwyt.databus.core.handler.RuleHandler;
 import com.wwyt.databus.core.plugin.DataFetcherManager;
@@ -18,9 +19,9 @@ import java.util.Map;
 public class FetcherHandler implements RuleHandler {
 
     @Override
-    public HandlerResult handle(BinlogWrapper binlogWrapper, RuleCfg ruleCfg) {
+    public HandlerResult handle(BinlogItemWrapper binlogItemWrapper, RuleCfg ruleCfg) {
         //获取需要处理的数据
-        log.info("数据获取-处理器：binlogWrapper:{},ruleCfg:{}", binlogWrapper, ruleCfg);
+        log.info("数据获取-处理器：binlogItemWrapper:{},ruleCfg:{}", binlogItemWrapper, ruleCfg);
 
         Fetcher fetcher = ruleCfg.getFetcher();
         Map<String, Object> fetchedData = new HashMap<>();
@@ -30,7 +31,7 @@ public class FetcherHandler implements RuleHandler {
                 //未找到指定的dataFetcher
                 return HandlerResult.fail(FetcherHandler.class.getName(), String.format("未找到指定的dataFetcher[%s]", fetcher.getName()));
             }
-            DataFetcherResult ret = dataFetcher.fetch(ruleCfg.getFetcher().getParams(), binlogWrapper.getBinlog().getType(), RuleHandler.getDataFromBinlog(binlogWrapper.getBinlog()));
+            DataFetcherResult ret = dataFetcher.fetch(ruleCfg.getFetcher().getParams(), binlogItemWrapper.getBinlogItem().getType(), getDataFromBinlog(binlogItemWrapper.getBinlogItem()));
             if (ret == null || !ret.getSuccess() ||
                     ret.getData() == null || ret.getData().size() == 0) {
                 //自定的dataFetcher获取数据为空
@@ -40,11 +41,25 @@ public class FetcherHandler implements RuleHandler {
             fetchedData = ret.getData();
         } else {
             //默认是取binlog中的data
-            fetchedData = RuleHandler.getDataFromBinlog(binlogWrapper.getBinlog());
+            fetchedData = getDataFromBinlog(binlogItemWrapper.getBinlogItem());
         }
 
-        binlogWrapper.setData(fetchedData);
+        binlogItemWrapper.setData(fetchedData);
 
         return HandlerResult.success(FetcherHandler.class.getName());
+    }
+
+    /**
+     * 从binlog中获取data
+     *
+     * @param binlogItem
+     * @return
+     */
+    private Map<String, Object> getDataFromBinlog(BinlogItem binlogItem) {
+        Map<String, Object> resultMap = new HashMap<>(16);
+        for (String key : binlogItem.getData().keySet()) {
+            resultMap.put(key, binlogItem.getData().get(key));
+        }
+        return resultMap;
     }
 }

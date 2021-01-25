@@ -1,6 +1,7 @@
 package com.wyyt.databus.app.retry;
 
 import com.alibaba.fastjson.JSON;
+import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.binlog.BinlogWrapper;
 import com.wwyt.databus.core.common.ExceptionPolicyType;
 import com.wwyt.databus.core.rule.entity.RuleCfg;

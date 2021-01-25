@@ -2,6 +2,7 @@ package com.wyyt.databus.app.binlog;
 
 import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.core.binlog.Binlog;
+import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.binlog.BinlogWrapper;
 import com.wyyt.databus.app.common.Constants;
 import lombok.extern.slf4j.Slf4j;

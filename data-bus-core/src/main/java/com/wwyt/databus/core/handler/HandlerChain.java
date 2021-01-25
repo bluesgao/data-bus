@@ -1,5 +1,6 @@
 package com.wwyt.databus.core.handler;
 
+import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.binlog.BinlogWrapper;
 import com.wwyt.databus.core.handler.impl.FetcherHandler;
 import com.wwyt.databus.core.handler.impl.MonitorHandler;
@@ -24,14 +25,17 @@ public class HandlerChain {
 
     public static void process(BinlogWrapper binlogWrapper, RuleCfg rule) {
         log.info("处理器链开始处理：binlogWrapper:{},ruleCfg:{}", binlogWrapper, rule);
-        for (RuleHandler handler : handlerList) {
-            HandlerResult ret = handler.handle(binlogWrapper, rule);
-            log.info("处理器链处理结果：HandlerResult:{}", ret);
-            if (!ret.getSuccess()) {
-                //处理器结果为false，则终止处理
-                break;
+        //一个事务中的update where in 操作会有多条修改记录
+        List<BinlogItemWrapper> itemWrappers = BinlogItemWrapper.getBinlogItems(binlogWrapper.getBinlog());
+        for (BinlogItemWrapper itemWrapper : itemWrappers) {
+            for (RuleHandler handler : handlerList) {
+                HandlerResult ret = handler.handle(itemWrapper, rule);
+                log.info("处理器链处理结果：HandlerResult:{}", ret);
+                if (!ret.getSuccess()) {
+                    //处理器结果为false，则终止处理
+                    break;
+                }
             }
-
         }
     }
 }
