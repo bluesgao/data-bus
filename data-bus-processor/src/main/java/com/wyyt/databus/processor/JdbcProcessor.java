@@ -53,6 +53,8 @@ public class JdbcProcessor implements DataProcessor {
                 //String sql = upsertSql(table, data);
                 SqlEntity entity = new SqlEntity(table, data, null);
                 String sql = SqlBuilder.upsert(entity);
+                log.info("INSERT OR UPDATE upsertSql:{}",sql);
+
                 if (sql == null) {
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }

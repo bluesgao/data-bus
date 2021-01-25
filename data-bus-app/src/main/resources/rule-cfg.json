@@ -174,7 +174,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, l.protocol_id as plan_id, l.content as log_content, l.create_user_id as operator_id, l.create_user_name as operator_name, l.create_company_id as operator_company_id, l.create_company_name as operator_company_name, l.log_type as log_type , l.create_time as row_create_time, l.create_time as row_update_time from trade_protocol_log l where l.order_log_type = 0 and l.protocol_log_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, l.protocol_id as plan_id, l.content as log_content, convert(ifnull(l.create_company_id ,0) ,unsigned)as operator_id, l.create_user_name as operator_name, convert(ifnull(l.create_company_id ,0) ,unsigned)as operator_company_id, l.create_company_name as operator_company_name, l.log_type as log_type , l.create_time as row_create_time, l.create_time as row_update_time from trade_protocol_log l where l.order_log_type = 0 and l.protocol_log_id = ?",
         "biz.fields": [
           "protocol_log_id"
         ]
