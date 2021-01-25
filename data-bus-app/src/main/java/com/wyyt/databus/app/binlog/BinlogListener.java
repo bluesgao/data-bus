@@ -2,8 +2,8 @@ package com.wyyt.databus.app.binlog;
 
 import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.core.binlog.Binlog;
-import com.wwyt.databus.core.binlog.BinlogItemWrapper;
 import com.wwyt.databus.core.binlog.BinlogWrapper;
+import com.wwyt.databus.plugin.common.enums.EventType;
 import com.wyyt.databus.app.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -35,7 +35,9 @@ public class BinlogListener {
                 Binlog binlog = JSON.parseObject(record.value().toString(), Binlog.class);
                 log.info("binlog:{}", JSON.toJSONString(binlog));
                 //包装binlog
-                binlogWrappers.add(BinlogWrapper.warp(binlog));
+                if (supportEvent(binlog.getType())) {
+                    binlogWrappers.add(BinlogWrapper.warp(binlog));
+                }
             }
         }
 
@@ -45,5 +47,14 @@ public class BinlogListener {
             dispatcher.dispatch(binlogWrappers);
         }
 
+    }
+
+    private boolean supportEvent(String event) {
+        if (event.equalsIgnoreCase(EventType.INSERT.getEvent())
+                || event.equalsIgnoreCase(EventType.UPDATE.getEvent())
+                || event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
+            return true;
+        }
+        return false;
     }
 }
