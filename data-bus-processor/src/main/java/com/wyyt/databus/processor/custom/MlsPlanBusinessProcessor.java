@@ -114,8 +114,8 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         fieldMappings.put("order_user_id", "buyer_user_id");
         fieldMappings.put("order_user_name", "buyer_user_name");
         fieldMappings.put("buyer_user_phone", "order_user_phone");
-        fieldMappings.put("seller_company_id", "fin_company_id");
-        fieldMappings.put("seller_company_name", "fin_company_name");
+        fieldMappings.put("fin_company_id", "seller_company_id");
+        fieldMappings.put("fin_company_name", "seller_company_name");
 
         //从data中获取数据
         Map<String, Object> fieldAndValues = populateFieldAndValues(fieldMappings, data);
