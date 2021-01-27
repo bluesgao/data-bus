@@ -113,7 +113,7 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
         fieldMappings.put("order_company_name", "buyer_company_name");
         fieldMappings.put("order_user_id", "buyer_user_id");
         fieldMappings.put("order_user_name", "buyer_user_name");
-        fieldMappings.put("buyer_user_phone", "order_user_phone");
+        fieldMappings.put("order_user_phone", "buyer_user_phone");
         fieldMappings.put("fin_company_id", "seller_company_id");
         fieldMappings.put("fin_company_name", "seller_company_name");
 
