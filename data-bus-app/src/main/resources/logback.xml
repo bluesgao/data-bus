@@ -1,59 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/defualts.xml"/>
 
-    <property name="CATALINA_BASE" value="/wyyt/logs/dubbo/wyyt-data-bus-service"></property>
+    <!-- 日志文件名称 -->
+    <property name="LOG_FILE" value="/wyyt/logs/dubbo/wyyt-data-bus-service"/>​
 
+    <!-- 日志输出格式 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="%d{MM-dd HH:mm:ss.SSS} %-5level [%thread{36}]%logger-%line - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n"/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
 
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <target>System.out</target>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 对日志进行格式化 -->
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
         </encoder>
     </appender>
 
-    <!-- 生成json格式日志-->
-    <appender name="elkLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-         <append>true</append>
-         <!-- 路径也要按照规范修改 -->
-         <file>${CATALINA_BASE}/gyl-databus-web-filebeat.log</file>
-         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-             <layout class="com.sijibao.basics.framework.core.common.log.format.JsonConsoleLayout"/>
-         </encoder>
-         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-             <level>INFO</level>
-         </filter>
-         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-             <!-- 路径也要按照规范修改 -->
-             <fileNamePattern>${CATALINA_BASE}/gyl-databus-web-filebeat.%d{yyyy-MM-dd}.log</fileNamePattern>
-         </rollingPolicy>
+    <!-- 定义 ALL 日志的输出方式:-->
+    <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件路径，日志文件名称-->
+        <file>${LOG_FILE}/${springAppName}-dev-filebeat.log</file>
         <append>true</append>
-        <file>${CATALINA_BASE}/gyl-databus-filebeat.log</file> <!-- 路径也要按照规范修改 -->
-        <encoder class="net.logstash.logback.encoder.ex.LogstashEncoderEx" > <!-- ELK 最新接入方式 -->
-        <!--includeCallerData 请求者信息字段 需要开启异步写入，否则比较比较耗性能-->
-        <includeCallerData>true</includeCallerData>
-        <excludeMdcKeyName>Proxy-TraceId</excludeMdcKeyName>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-        <level>INFO</level>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-        <fileNamePattern>${CATALINA_BASE}/gyl-databus-filebeat.%d{yyyy-MM-dd-HH}.%i.log <!-- 路径也要按照规范修改 -->
-        </fileNamePattern>
-        <!-- 单个文件最大100M,每小时日志大小如果超过100M则拆分成多个-->
-        <maxFileSize>100MB</maxFileSize>
-        <!-- 默认保存三十天-->
-        <maxHistory>720</maxHistory>
+        <!-- 设置滚动策略，当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件路径，新的 ALL 日志文件名称，“ i ” 是个变量 -->
+            <fileNamePattern>
+                ${LOG_FILE}/${springAppName}-filebeat.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
+        </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="elkLog"/>
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE_ALL"/>
     </root>
-
-    <!--<root level="INFO">-->
-        <!--<appender-ref ref="elkLog"/>-->
-    <!--</root>-->
 
 </configuration>
