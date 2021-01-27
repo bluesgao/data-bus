@@ -62,6 +62,12 @@
             <groupId>com.wyyt</groupId>
             <artifactId>data-bus-fetcher</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <groupId>mysql</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--data-bus-processor-->
         <dependency>
