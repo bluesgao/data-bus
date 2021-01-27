@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="CATALINA_BASE" value="/wyyt/logs/tomcat/gyl-databus"></property>
+    <property name="CATALINA_BASE" value="/wyyt/logs/dubbo/wyyt-data-bus-service"></property>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{MM-dd HH:mm:ss.SSS} %-5level [%thread{36}]%logger-%line - %msg%n"/>
@@ -15,9 +15,9 @@
 
     <!-- 生成json格式日志-->
     <appender name="elkLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- <append>true</append>
-         &lt;!&ndash; 路径也要按照规范修改 &ndash;&gt;
-         <file>${CATALINA_BASE}/gyl-mall-web-filebeat.log</file>
+         <append>true</append>
+         <!-- 路径也要按照规范修改 -->
+         <file>${CATALINA_BASE}/gyl-databus-web-filebeat.log</file>
          <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
              <layout class="com.sijibao.basics.framework.core.common.log.format.JsonConsoleLayout"/>
          </encoder>
@@ -25,35 +25,35 @@
              <level>INFO</level>
          </filter>
          <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-             &lt;!&ndash; 路径也要按照规范修改 &ndash;&gt;
-             <fileNamePattern>${CATALINA_BASE}/gyl-mall-web-filebeat.%d{yyyy-MM-dd}.log</fileNamePattern>
-         </rollingPolicy>-->
-        <!--<append>true</append>-->
-        <!--<file>${CATALINA_BASE}/gyl-databus-filebeat.log</file> &lt;!&ndash; 路径也要按照规范修改 &ndash;&gt;-->
-        <!--<encoder class="net.logstash.logback.encoder.ex.LogstashEncoderEx" > &lt;!&ndash; ELK 最新接入方式 &ndash;&gt;-->
-        <!--&lt;!&ndash;includeCallerData 请求者信息字段 需要开启异步写入，否则比较比较耗性能&ndash;&gt;-->
-        <!--<includeCallerData>true</includeCallerData>-->
-        <!--<excludeMdcKeyName>Proxy-TraceId</excludeMdcKeyName>-->
-        <!--</encoder>-->
-        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
-        <!--<level>INFO</level>-->
-        <!--</filter>-->
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
-        <!--<fileNamePattern>${CATALINA_BASE}/gyl-databus-filebeat.%d{yyyy-MM-dd-HH}.%i.log &lt;!&ndash; 路径也要按照规范修改 &ndash;&gt;-->
-        <!--</fileNamePattern>-->
-        <!--&lt;!&ndash; 单个文件最大100M,每小时日志大小如果超过100M则拆分成多个&ndash;&gt;-->
-        <!--<maxFileSize>100MB</maxFileSize>-->
-        <!--&lt;!&ndash; 默认保存三十天&ndash;&gt;-->
-        <!--<maxHistory>720</maxHistory>-->
-        <!--</rollingPolicy>-->
+             <!-- 路径也要按照规范修改 -->
+             <fileNamePattern>${CATALINA_BASE}/gyl-databus-web-filebeat.%d{yyyy-MM-dd}.log</fileNamePattern>
+         </rollingPolicy>
+        <append>true</append>
+        <file>${CATALINA_BASE}/gyl-databus-filebeat.log</file> <!-- 路径也要按照规范修改 -->
+        <encoder class="net.logstash.logback.encoder.ex.LogstashEncoderEx" > <!-- ELK 最新接入方式 -->
+        <!--includeCallerData 请求者信息字段 需要开启异步写入，否则比较比较耗性能-->
+        <includeCallerData>true</includeCallerData>
+        <excludeMdcKeyName>Proxy-TraceId</excludeMdcKeyName>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>${CATALINA_BASE}/gyl-databus-filebeat.%d{yyyy-MM-dd-HH}.%i.log <!-- 路径也要按照规范修改 -->
+        </fileNamePattern>
+        <!-- 单个文件最大100M,每小时日志大小如果超过100M则拆分成多个-->
+        <maxFileSize>100MB</maxFileSize>
+        <!-- 默认保存三十天-->
+        <maxHistory>720</maxHistory>
+        </rollingPolicy>
     </appender>
 
     <root level="DEBUG">
-        <appender-ref ref="console"/>
+        <appender-ref ref="elkLog"/>
     </root>
 
-    <root level="INFO">
-        <appender-ref ref="console"/>
-    </root>
+    <!--<root level="INFO">-->
+        <!--<appender-ref ref="elkLog"/>-->
+    <!--</root>-->
 
 </configuration>
