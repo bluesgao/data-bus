@@ -363,5 +363,47 @@
         }
       }
     ]
+  },
+  {
+    "id": "mls_order_log",
+    "desc": "数据同步-订单日志",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_log",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id,tpl.protocol_order_id as order_id, tpl.content as log_content, tpl.log_type as log_type, tpl.create_company_id as operator_company_id, tpl.create_company_name as operator_company_name, tpl.create_user_id as operator_id, tpl.create_user_name as operator_name, tpl.create_time as row_create_time , tpl.create_time as row_update_time from trade_protocol_log tpl where tpl.order_log_type = 0 and tpl.protocol_log_id =?",
+        "biz.fields": [
+          "protocol_log_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_log"
+        }
+      }
+    ]
   }
 ]
