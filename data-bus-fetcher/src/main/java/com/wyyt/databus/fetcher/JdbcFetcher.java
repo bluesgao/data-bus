@@ -53,6 +53,9 @@ public class JdbcFetcher implements DataFetcher {
         try {
             List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields));
             String script = params.get(JdbcCfgConstants.biz_sql).toString();
+            log.info("JdbcFetcher sql:{}", script);
+            log.info("JdbcFetcher queryParams:{}", JSON.toJSONString(queryParams));
+
             dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
