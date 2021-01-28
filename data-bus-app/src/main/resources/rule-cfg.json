@@ -512,7 +512,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpon.id as id, tpon.protocol_order_id as order_id, tpon.negotiate_status  as status, tpon.is_expired, tpon.before_price, tpon.after_price, tpon.before_platform_price, tpon.after_platform_price, tpon.effective_time, tpon.`version`, tpon.create_user_id as operator_id, tpon.create_user_name as operator_name, tpon.row_create_time, tpon.row_update_time from trade_protocol_order_negotiate tpon where tpon.id = ?",
+        "biz.sql": "select tpon.id as id, tpon.protocol_order_id as order_id, tpon.negotiate_status as status, tpon.is_expired, tpon.before_price, tpon.after_price, tpon.before_platform_price, tpon.after_platform_price, tpon.effective_time, tpon.`version`, case when  (tpon.create_user_id='' or tpon.create_user_id is null) then 0 else tpon.create_user_id end as operator_id, tpon.create_user_name as operator_name, tpon.row_create_time, tpon.row_update_time from trade_protocol_order_negotiate tpon where tpon.id = ?",
         "biz.fields": [
           "id"
         ]
