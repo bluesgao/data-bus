@@ -554,7 +554,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpsu.short_code, tpsu.real_url, tpsu.real_url, tpsu.is_delete, tpsu.creat_time as row_create_time, tpsu.creat_time as row_update_time from trade_protocol_short_url tpsu where tpsu.id = ?",
+        "biz.sql": "select tpsu.short_code, tpsu.short_url, tpsu.real_url, tpsu.is_delete as is_deleted, tpsu.creat_time as row_create_time, tpsu.creat_time as row_update_time from trade_protocol_short_url tpsu where tpsu.id = ?",
         "biz.fields": [
           "id"
         ]
