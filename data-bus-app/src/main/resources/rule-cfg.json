@@ -615,5 +615,89 @@
         }
       }
     ]
+  },
+  {
+    "id": "mls_order_negotiate_audit-1",
+    "desc": "数据同步-订单调价审核",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_negotiate",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpon.id as order_negotiate_id, tpon.bop_audit_type  as `type`, tpon.bop_audit_remarks as remark, tpon.bop_audit_user_id as operator_id, tpon.bop_audit_user_name as operator_name, tpon.bop_audit_time as row_create_time, tpon.row_update_time as row_update_time, 'platfrom' as audit_type from trade_protocol_order_negotiate tpon where tpon.id =?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_negotiate_audit"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_negotiate_audit-2",
+    "desc": "数据同步-订单调价审核",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_negotiate",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpon.id as order_negotiate_id, tpon.down_confirm_remarks as remark, tpon.down_confirm_user_id as operator_id, tpon.down_confirm_user_name as operator_name, tpon.down_confirm_time as row_create_time, tpon.row_update_time as row_update_time, 'purchase' as audit_type from trade_protocol_order_negotiate tpon where tpon.id = ?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_negotiate_audit"
+        }
+      }
+    ]
   }
 ]
