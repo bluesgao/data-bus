@@ -722,7 +722,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select moac.transport_agent_id, moac.transport_agent_code as agent_code, tpo.protocol_order_id  as mls_older_id, tpo.protocol_order_sn as mls_order_sn, moac.bill_amount, moac.bill_amount_remain_rate , moac.info_amount, moac.info_amount_remain_rate , moac.operator_id, moac.operator_name , moac.is_deleted, moac.row_create_time , moac.row_update_time from mls_order_agent_config moac left join trade_protocol_order tpo on moac.protocol_order_sn = tpo.protocol_order_sn where moac.id =?",
+        "biz.sql": "select moac.transport_agent_id, moac.transport_agent_code, tpo.protocol_order_id  as order_id, tpo.protocol_order_sn as order_sn, moac.bill_amount, moac.bill_amount_remain_rate , moac.info_amount, moac.info_amount_remain_rate , moac.operator_id, moac.operator_name , moac.is_deleted, moac.row_create_time , moac.row_update_time from mls_order_agent_config moac left join trade_protocol_order tpo on moac.protocol_order_sn = tpo.protocol_order_sn where moac.id =?",
         "biz.fields": [
           "id"
         ]
