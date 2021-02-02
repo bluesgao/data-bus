@@ -596,7 +596,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpos.id, tpos.protocol_order_id as order_id, tpos.snapshot_version , tpos.freight_price , tpos.tax_rate/10000 as tax_rate , tpos.tax_freight_price as pithead_price, tpos.platform_price , tpos.price as market_price, tpos.discounts_price , tpos.carrier_contract_create_time , tpos.carrier_contract_sign_time , tpos.carrier_contract_sn , tpos.carrier_contract_url , tpos.purchase_contract_create_time , tpos.purchase_contract_sign_time, tpos.purchase_contract_sn , tpos.purchase_contract_url , tpos.row_create_time, tpos.row_create_time from trade_protocol_order_snapshot tpos where tpos.id =?",
+        "biz.sql": "select tpos.id, tpos.protocol_order_id as order_id, tpos.snapshot_version , tpos.freight_price , tpos.tax_rate/10000 as tax_rate, tpos.tax_freight_price as pithead_price, tpos.platform_price , tpos.price as market_price, tpos.discounts_price , ifnull(UNIX_TIMESTAMP(tpos.carrier_contract_create_time), 0) as carrier_contract_create_time, ifnull(UNIX_TIMESTAMP(tpos.carrier_contract_sign_time), 0) as carrier_contract_sign_time, tpos.carrier_contract_sn , tpos.carrier_contract_url , ifnull(UNIX_TIMESTAMP(tpos.purchase_contract_create_time), 0) as purchase_contract_create_time, ifnull(UNIX_TIMESTAMP(tpos.purchase_contract_sign_time), 0) as purchase_contract_sign_time, tpos.purchase_contract_sn , tpos.purchase_contract_url , tpos.row_create_time, tpos.row_create_time from trade_protocol_order_snapshot tpos where tpos.id =?",
         "biz.fields": [
           "id"
         ]
