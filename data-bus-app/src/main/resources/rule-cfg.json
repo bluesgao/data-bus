@@ -1163,48 +1163,6 @@
     ]
   },
   {
-    "id": "mls_order_business-2",
-    "desc": "数据同步-订单业务",
-    "monitor": [
-      {
-        "schema": "renewscc_dev",
-        "table": "trade_protocol_order",
-        "event": [
-          "insert",
-          "update"
-        ],
-        "field": []
-      }
-    ],
-    "fetcher": {
-      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
-      "desc": "从mysql获取数据",
-      "params": {
-        "driverClassName": "com.mysql.jdbc.Driver",
-        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
-        "username": "zyc",
-        "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpo.protocol_order_id as order_id, tp.fin_company_id as buyer_company_id, tp.fin_company_name as buyer_company_name, 'FIN' as buyer_company_type, tp.broker_company_id as seller_company_id, tp.broker_company_name as seller_company_name, 'BROKER' as seller_company_type, tp.broker_user_id as seller_user_id, tp.broker_user_name as seller_user_name, tp.broker_user_phone as seller_user_phone, tpo.tax_unit_price as price , 1 as business_module from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
-        "biz.fields": [
-          "protocol_order_id"
-        ]
-      }
-    },
-    "processor": [
-      {
-        "name": "com.wyyt.databus.processor.JdbcProcessor",
-        "desc": "向mysql表写数据",
-        "params": {
-          "driverClassName": "com.mysql.jdbc.Driver",
-          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
-          "username": "zyc",
-          "password": "XNtyEFrgMwR5DYtBEjBG",
-          "biz.table": "mls_order_business"
-        }
-      }
-    ]
-  },
-  {
     "id": "mls_order_business-3",
     "desc": "数据同步-订单业务",
     "monitor": [
