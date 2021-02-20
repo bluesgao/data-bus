@@ -1268,7 +1268,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tp.protocol_id as plan_id, tp.broker_company_id , tp.broker_company_name , tp.broker_user_id , tp.broker_user_name , tp.broker_user_phone , \"BROKER\" as service_company_type, 1 as business_module from trade_protocol tp , trade_protocol_order tpo, trade_protocol_order_logistics tpol where tpo.protocol_id = tp.protocol_id and tpol.protocol_order_id =tpo.protocol_order_id and tpo.protocol_order_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tp.protocol_id as plan_id, tp.broker_company_id as service_company_id, tp.broker_company_name as service_company_name, tp.broker_user_id as service_user_id, tp.broker_user_name as service_user_name, tp.broker_user_phone as service_user_phone, \"BROKER\" as service_company_type, 1 as business_module from trade_protocol tp , trade_protocol_order tpo, trade_protocol_order_logistics tpol where tpo.protocol_id = tp.protocol_id and tpol.protocol_order_id =tpo.protocol_order_id and tpo.protocol_order_id = ?",
         "biz.fields": [
           "protocol_order_id"
         ]
