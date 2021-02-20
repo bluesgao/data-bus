@@ -344,7 +344,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpg.goods_id , tpg.goods_name , tpg.goods_type , tpg.goods_product_img , tpg.goods_target , tpcm.coal_mine_id as coalmine_id, tpcm.coal_mine_name as coalmine_name, tpcm.coal_mine_nick_name as coalmine_nickname, tpcm.province as province_code, tpcm.province_name , tpcm.city as city_code, tpcm.city_name , tpcm.area as area_code, tpcm.area_name , tpcm.address from trade_protocol_goods tpg , trade_protocol_coal_mine tpcm, trade_protocol_order tpo where tpg.protocol_id = tpo.protocol_id and tpo.protocol_id = tpcm.protocol_id and tpg.protocol_id =?",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpg.goods_id , tpg.goods_name , tpg.goods_type ,(select group_concat(distinct(tgsa.service_type)) from trade_goods_service_attach tgsa where tgsa.goods_id = tpg.goods_id) as goods_service_type, tpg.goods_product_img , tpg.goods_target , tpcm.coal_mine_id as coalmine_id, tpcm.coal_mine_name as coalmine_name, tpcm.coal_mine_nick_name as coalmine_nickname, tpcm.province as province_code, tpcm.province_name , tpcm.city as city_code, tpcm.city_name , tpcm.area as area_code, tpcm.area_name , tpcm.address from trade_protocol_goods tpg , trade_protocol_coal_mine tpcm, trade_protocol_order tpo where tpg.protocol_id = tpo.protocol_id and tpo.protocol_id = tpcm.protocol_id and tpg.protocol_id =?",
         "biz.fields": [
           "protocol_id"
         ]
