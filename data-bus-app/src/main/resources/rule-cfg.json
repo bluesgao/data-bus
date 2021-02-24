@@ -1497,5 +1497,131 @@
         }
       }
     ]
+  },
+  {
+    "id": "mls_waybill_sign-1",
+    "desc": "数据同步-运单签约",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_waybill_verify",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as waybill_id, 0 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, tpow.purchase_status as status, twv.force_sign_remark, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.create_user_id as operator_id, twv.update_user_id as operator_name, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'PURCHASE' and twv.waybill_no = ?",
+        "biz.fields": [
+          "waybill_no"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill_sign"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_waybill_sign-2",
+    "desc": "数据同步-运单签约",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_waybill_verify",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as waybill_id, 2 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, ifnull(UNIX_TIMESTAMP(tpow.sign_over_time), 0)  as sign_over_time, tpow.status as status, tpow.sign_flag as is_force_sign, twv.force_sign_remark, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'FIN' and twv.waybill_no = ?",
+        "biz.fields": [
+          "waybill_no"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill_sign"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_waybill_sign-3",
+    "desc": "数据同步-运单签约",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_waybill_verify",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as waybill_id, 1 as business_module, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and twv.waybill_no = ?",
+        "biz.fields": [
+          "waybill_no"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill_sign"
+        }
+      }
+    ]
   }
 ]
