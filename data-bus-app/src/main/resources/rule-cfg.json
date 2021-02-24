@@ -1623,5 +1623,89 @@
         }
       }
     ]
+  },
+  {
+    "id": "mls_waybill_sign_up_extension",
+    "desc": "数据同步-运单签约扩展",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_waybill",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as id, twv.tool_number, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and tpow.order_waybill_id = ?",
+        "biz.fields": [
+          "order_waybill_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill_sign_up_extension"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_waybill_sign_down_extension",
+    "desc": "数据同步-运单签约扩展",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_waybill",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as id, twv.goods_deduction_amount as coal_deduction_amount, twv.coal_deduction_reason as coal_deduction_type, twv.coal_remark as coal_deduction_remark, tpow.coal_duct_status as coal_deduction_status, twv.freight_deduction_amount as freight_deduction_amount, twv.deduction_reason as freight_deduction_type, twv.remark as freight_deduction_remark, tpow.freight_duct_status as freight_deduction_status, twv.rule_name as rule_name, twv.logistics_rule_code as formula_code, twv.formula_code as formula_name, twv.constant_param_json as constant_param_json, twv.variate_param_json as variate_param_json, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'PURCHASE' and tpow.order_waybill_id = ?",
+        "biz.fields": [
+          "order_waybill_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill_sign_down_extension"
+        }
+      }
+    ]
   }
 ]
