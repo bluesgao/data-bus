@@ -974,7 +974,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_service_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_SERVICE_PRICE' as price_code, '平台服务费' as price_name from trade_protocol tp left join trade_protocol_order tpo on 	tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_service_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_SERVICE_PRICE' as price_code, '平台服务费' as price_name from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
         "biz.fields": [
           "protocol_order_id"
         ]
@@ -1100,7 +1100,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_PRICE' as price_code, '平台含税价' as price_name from trade_protocol tp left join trade_protocol_order tpo on 	tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_PRICE' as price_code, '平台含税价' as price_name from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
         "biz.fields": [
           "protocol_order_id"
         ]
@@ -1184,7 +1184,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpof.protocol_order_id as order_id, tp.order_company_id as buyer_company_id, tp.order_company_name as buyer_company_name, 'PURCHASE' as buyer_company_type, tp.order_user_id as buyer_user_id, tp.order_user_name as buyer_user_name, tp.order_user_phone as buyer_user_phone, tp.fin_company_id as seller_company_id, tp.fin_company_name as seller_company_name, 'FIN' as seller_company_type, tpof.platform_price as price , 0 as business_module from trade_protocol tp left join trade_protocol_order tpo on 	tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpof.protocol_order_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpof.protocol_order_id as order_id, tp.order_company_id as buyer_company_id, tp.order_company_name as buyer_company_name, 'PURCHASE' as buyer_company_type, tp.order_user_id as buyer_user_id, tp.order_user_name as buyer_user_name, tp.order_user_phone as buyer_user_phone, tp.fin_company_id as seller_company_id, tp.fin_company_name as seller_company_name, 'FIN' as seller_company_type, tpof.platform_price as price , 0 as business_module from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpof.protocol_order_id = ?",
         "biz.fields": [
           "protocol_order_id"
         ]
@@ -1410,6 +1410,48 @@
           "username": "zyc",
           "password": "XNtyEFrgMwR5DYtBEjBG",
           "biz.table": "mls_order_business_extension"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_waybill",
+    "desc": "数据同步-运单",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_waybill",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpow.order_waybill_id as id, tpow.sjb_id as waybill_sn, tpow.protocol_order_id as order_id, tpow.protocol_order_sn as order_sn, tpow.status as status , tpow.verify_status as up_status, tpow.purchase_status as down_status, tpow.delivery_pay_type as down_pay_type, tpo.payment_path as up_pay_type, tpo.down_business_type as down_pay_type, tpow.formula_type as formula_type, tpg.goods_id as goods_id, tpow.goods_name as goods_name , tgb.coalmine_id as coalmine_id, tpow.coalmine_name as coalmine_name , tpow.plate_number , tpow.driver_code , tpow.driver_name, tpow.driver_phone, tpow.source_address, tpow.target_address, ifnull(UNIX_TIMESTAMP(tpow.sjb_send_time), 0)  as send_time, ifnull(UNIX_TIMESTAMP(tpow.source_sign_time), 0)  as source_time, ifnull(UNIX_TIMESTAMP(tpow.target_sign_time), 0)  as target_time, tpow.offline_flag as waybill_source, tpow.snapshot_version , tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow left join trade_protocol_order tpo on tpow.protocol_order_id = tpo.protocol_order_id left join trade_protocol_goods tpg on tpow.protocol_id = tpg.protocol_id left join trade_goods_base tgb on tgb.goods_id = tpg.goods_id where tpow.order_waybill_id = ?",
+        "biz.fields": [
+          "order_waybill_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_waybill"
         }
       }
     ]
