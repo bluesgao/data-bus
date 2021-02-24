@@ -1898,7 +1898,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.protocol_price as freight_price, 'freight_price' as price_code, '采购商运价不含税' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.freight_price as price, 'freight_price' as price_code, '采购商运价不含税' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -1940,7 +1940,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.protocol_price as tax_rate, 'tax_rate' as price_code, '采购商运价税率' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.tax_rate as price, 'tax_rate' as price_code, '采购商运价税率' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -1982,7 +1982,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.protocol_price as goods_price, 'goods_price' as price_code, '一票优惠价' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.goods_price as price, 'goods_price' as price_code, '一票优惠价' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -2024,7 +2024,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.protocol_price as fix_price, 'fix_price' as price_code, '一口价' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_id as company_name, 'PURCHASE' as company_type, tpow.fix_price as price, 'fix_price' as price_code, '一口价' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
