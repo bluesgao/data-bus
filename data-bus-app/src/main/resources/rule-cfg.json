@@ -1730,7 +1730,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.broker_company_id as company_id, tp.broker_company_name as company_name, 'BROKER' as company_type, tpow.service_charge as price, 'service_charge' as price_code, '上游经纪人代发费价格' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, if(isnull(tp.broker_company_id) or tp.broker_company_id='',0,tp.broker_company_id) as company_id, tp.broker_company_name as company_name, 'BROKER' as company_type, tpow.service_charge as price, 'service_charge' as price_code, '上游经纪人代发费价格' as price_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
