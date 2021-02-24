@@ -1730,7 +1730,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select twva.attach_id as id, tpow.order_waybill_id as waybill_id, 0 as business_module, twva.attach_type  as file_type, twva.img_url as file_url, twva.del_flag as deleted, twva.create_date as row_create_time, twva.create_date as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_waybill_verify_attach twva where tpow.sjb_id = twv.waybill_no and twv.verify_id =twva.verify_id and twv.company_type = 'BROKER' and twva.del_flag =0 and tpow.order_waybill_id =?",
+        "biz.sql": "select twva.attach_id as id, tpow.order_waybill_id as waybill_id, 0 as business_module, twva.attach_type  as file_type, twva.img_url as file_url, twva.del_flag as is_deleted, twva.create_date as row_create_time, twva.create_date as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_waybill_verify_attach twva where tpow.sjb_id = twv.waybill_no and twv.verify_id =twva.verify_id and twv.company_type = 'BROKER' and twva.del_flag =0 and tpow.order_waybill_id =?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -1772,7 +1772,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select twva.attach_id as id, tpow.order_waybill_id as waybill_id, 1 as business_module, twva.attach_type  as file_type, twva.img_url as file_url, twva.del_flag as deleted, twva.create_date as row_create_time, twva.create_date as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_waybill_verify_attach twva where tpow.sjb_id = twv.waybill_no and twv.verify_id =twva.verify_id and twv.company_type = 'PURCHASE' and twva.del_flag =0 and tpow.order_waybill_id =?",
+        "biz.sql": "select twva.attach_id as id, tpow.order_waybill_id as waybill_id, 1 as business_module, twva.attach_type  as file_type, twva.img_url as file_url, twva.del_flag as is_deleted, twva.create_date as row_create_time, twva.create_date as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_waybill_verify_attach twva where tpow.sjb_id = twv.waybill_no and twv.verify_id =twva.verify_id and twv.company_type = 'PURCHASE' and twva.del_flag =0 and tpow.order_waybill_id =?",
         "biz.fields": [
           "order_waybill_id"
         ]
