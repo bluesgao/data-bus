@@ -236,7 +236,7 @@ public class MlsPlanBusinessProcessor implements DataProcessor {
     private DataSource getDataSourceConn(Map<String, Object> params) {
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
-        jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
+        jdbcProps.setUrl("jdbc:mysql://192.168.32.90:6612/cscc_test?tinyInt1isBit=false&transformedBitIsBoolean=false");
         jdbcProps.setUsername("zyc");
         jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
