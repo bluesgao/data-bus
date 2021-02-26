@@ -44,6 +44,7 @@ public class JdbcProcessor implements DataProcessor {
             return DataProcessorResult.fail("获取数据连接conn错误");
         }
 
+        String errMsg = "";
         String table = params.get(JdbcCfgConstants.biz_table).toString();
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
             log.info("INSERT OR UPDATE 处理中");
@@ -56,10 +57,12 @@ public class JdbcProcessor implements DataProcessor {
                 if (sql == null) {
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }
+                log.info("JdbcProcessor JdbcUtils.execute sql:{}", sql);
                 JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("JdbcProcessor JdbcUtils.execute err:{}", e);
+                errMsg = e.getMessage();
             }
         } else if (event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
             log.info("DELETE 处理中");
@@ -76,13 +79,15 @@ public class JdbcProcessor implements DataProcessor {
                 if (sql == null) {
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
+                log.info("JdbcProcessor JdbcUtils.execute sql:{}", sql);
                 JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("JdbcProcessor JdbcUtils.execute err:{}", e);
+                errMsg = e.getMessage();
             }
         }
-        return DataProcessorResult.fail("");
+        return DataProcessorResult.fail(errMsg);
     }
 
     @Override

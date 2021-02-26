@@ -49,6 +49,7 @@ public class JdbcFetcher implements DataFetcher {
             return DataFetcherResult.fail("获取数据连接conn错误");
         }
 
+        String errMsg = "";
         List<Map<String, Object>> dataList = null;
         try {
             List<Object> queryParams = getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields));
@@ -59,13 +60,14 @@ public class JdbcFetcher implements DataFetcher {
             dataList = JdbcUtils.executeQuery(dataSource, script, queryParams);
             log.info("dataList:{}", dataList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("JdbcUtils.executeQuery err:{}", e);
+            errMsg = e.getMessage();
         }
         if (dataList != null && dataList.size() > 0) {
             return DataFetcherResult.success(dataList.get(0));
         }
 
-        return DataFetcherResult.fail("");
+        return DataFetcherResult.fail(errMsg);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class HttpFetcher implements DataFetcher {
         }
 
         //todo
+        String errMsg = "";
         try {
             String url = params.get(HttpCfgConstants.url).toString();
             Map<String, Object> postMap = getPostParamValues(data, (List<String>) params.get(HttpCfgConstants.biz_fields));
@@ -43,9 +44,11 @@ public class HttpFetcher implements DataFetcher {
                 return DataFetcherResult.success(resultMap);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.error("HttpFetcher HttpUtils.postJson err:{}", e);
+            errMsg = e.getMessage();
         }
-        return DataFetcherResult.fail("");
+        return DataFetcherResult.fail(errMsg);
     }
 
     @Override
