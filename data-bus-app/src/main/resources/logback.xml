@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defualts.xml"/>
+    <!--项目名称-->
+    <property name="AppName" value="data-bus-app"/>
 
     <!-- 日志文件名称 -->
-    <property name="LOG_FILE" value="/wyyt/logs/dubbo/wyyt-data-bus-service"/>​
+    <property name="LOG_FILE" value="/wyyt/logs/dubbo/wyyt-data-bus-service"/>
 
     <!-- 日志输出格式 -->
     <property name="CONSOLE_LOG_PATTERN"
@@ -21,13 +23,13 @@
     <!-- 定义 ALL 日志的输出方式:-->
     <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--日志文件路径，日志文件名称-->
-        <file>${LOG_FILE}/${springAppName}-dev-filebeat.log</file>
+        <file>${LOG_FILE}/${AppName}-dev-filebeat.log</file>
         <append>true</append>
         <!-- 设置滚动策略，当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件路径，新的 ALL 日志文件名称，“ i ” 是个变量 -->
             <fileNamePattern>
-                ${LOG_FILE}/${springAppName}-filebeat.%d{yyyy-MM-dd}.log
+                ${LOG_FILE}/${AppName}-filebeat.%d{yyyy-MM-dd}.log
             </fileNamePattern>
             <maxHistory>10</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
