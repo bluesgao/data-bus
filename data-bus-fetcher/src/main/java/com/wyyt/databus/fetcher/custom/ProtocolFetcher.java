@@ -35,9 +35,9 @@ public class ProtocolFetcher implements DataFetcher {
          */
         JdbcProps jdbcProps = new JdbcProps();
         jdbcProps.setDriverClassName("com.mysql.jdbc.Driver");
-        jdbcProps.setUrl("jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false");
-        jdbcProps.setUsername("zyc");
-        jdbcProps.setPassword("XNtyEFrgMwR5DYtBEjBG");
+        jdbcProps.setUrl("jdbc:mysql://192.168.32.90:6612/cscc_test?tinyInt1isBit=false&transformedBitIsBoolean=false");
+        jdbcProps.setUsername("coalscc");
+        jdbcProps.setPassword("af12121036b1c4e37ae8ab930a76679b");
 
         DataSource dataSource = JdbcBuilder.build(jdbcProps);
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
