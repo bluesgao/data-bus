@@ -1604,7 +1604,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id,tpow.order_waybill_id as waybill_id, 1 as business_module, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and twv.waybill_no = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 1 as business_module, tpow.verify_status as status, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and twv.waybill_no =?",
         "biz.fields": [
           "waybill_no"
         ]
