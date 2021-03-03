@@ -1,6 +1,7 @@
 package com.wyyt.databus.processor;
 
 import com.alibaba.druid.util.JdbcUtils;
+import com.alibaba.fastjson.JSON;
 import com.wwyt.databus.plugin.common.constants.JdbcCfgConstants;
 import com.wwyt.databus.plugin.common.enums.EventType;
 import com.wwyt.databus.plugin.processor.DataProcessor;
@@ -41,6 +42,7 @@ public class JdbcProcessor implements DataProcessor {
 
         DataSource dataSource = getDataSource(params);
         if (dataSource == null) {
+            log.warn("获取数据连接conn错误 params:{}", JSON.toJSON(params));
             return DataProcessorResult.fail("获取数据连接conn错误");
         }
 
@@ -48,24 +50,27 @@ public class JdbcProcessor implements DataProcessor {
         String table = params.get(JdbcCfgConstants.biz_table).toString();
         if (event.equalsIgnoreCase(EventType.INSERT.getEvent()) || event.equalsIgnoreCase(EventType.UPDATE.getEvent())) {
             log.info("INSERT OR UPDATE 处理中");
+            String sql = null;
             try {
                 //String sql = upsertSql(table, data);
                 SqlEntity entity = new SqlEntity(table, data, null);
-                String sql = SqlBuilder.upsert(entity);
+                sql = SqlBuilder.upsert(entity);
                 log.info("INSERT OR UPDATE upsertSql:{}", sql);
 
                 if (sql == null) {
+                    log.warn("upsertSql生成失败 entity:{}", JSON.toJSON(entity));
                     return DataProcessorResult.fail("upsertSql生成失败");
                 }
                 log.info("JdbcProcessor JdbcUtils.execute sql:{}", sql);
                 JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
-                log.error("JdbcProcessor JdbcUtils.execute err:{}", e);
+                log.error("JdbcProcessor JdbcUtils.execute err:{},sql:{}", e, sql);
                 errMsg = e.getMessage();
             }
         } else if (event.equalsIgnoreCase(EventType.DELETE.getEvent())) {
             log.info("DELETE 处理中");
+            String sql = null;
             try {
                 //String sql = deleteSql(table, getParamValue(data, (List<String>) params.get(JdbcCfgConstants.biz_fields)));
 
@@ -75,15 +80,16 @@ public class JdbcProcessor implements DataProcessor {
                 }
 
                 SqlEntity entity = new SqlEntity(table, null, whereFieldAndVaules);
-                String sql = SqlBuilder.delete(entity);
+                sql = SqlBuilder.delete(entity);
                 if (sql == null) {
+                    log.warn("deleteSql生成失败 entity:{}", JSON.toJSON(entity));
                     return DataProcessorResult.fail("deleteSql生成失败");
                 }
                 log.info("JdbcProcessor JdbcUtils.execute sql:{}", sql);
                 JdbcUtils.execute(dataSource, sql);
                 return DataProcessorResult.success();
             } catch (SQLException e) {
-                log.error("JdbcProcessor JdbcUtils.execute err:{}", e);
+                log.error("JdbcProcessor JdbcUtils.execute err:{},sql:{}", e, sql);
                 errMsg = e.getMessage();
             }
         }
