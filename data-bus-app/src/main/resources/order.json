@@ -1,0 +1,1113 @@
+[
+  {
+    "id": "mls_order",
+    "desc": "数据同步-订单",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      },
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_logistics",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select temp.*, ifnull(UNIX_TIMESTAMP(temp_tpl.create_time),0) as finish_time from ( select tpo.protocol_order_id as id, tpo.protocol_order_sn as order_sn, tpo.protocol_id as plan_id, tpo.create_user_id  as operator_id, tp.order_user_name as operator_name,tpo.protocol_sn as plan_sn , tpo.status as status, tpo.negotiate_status as negotiate_status, tpo.send_status as is_send, tpo.`number` as order_qty, tpo.tax_rate as tax_rate, tpo.payment_path as up_business_type, tpo.down_business_type as down_business_type , tpo.version as version, tpo.is_close as is_closed, tpo.is_delete as is_deleted, tpo.online_charge as is_online_charge, tpo.create_time as row_create_time, tpo.update_time as row_update_time, ifnull(UNIX_TIMESTAMP(tpol.begin_time), 0) as start_time, ifnull(UNIX_TIMESTAMP(tpol.end_time), 0) as end_time, tppp.delivery_type as delivery_type, tppp.delivery_pay_type as down_pay_type from trade_protocol_order tpo left join trade_protocol_order_logistics tpol on tpo.protocol_order_id = tpol.protocol_order_id left join trade_protocol_payment_plan tppp on tpo.protocol_id = tppp.protocol_id left join trade_protocol tp on tp.protocol_id =tpo.protocol_id where tpo.protocol_order_id = ?) temp left join ( select tpl.protocol_order_id, tpl.create_time from trade_protocol_log tpl where tpl.protocol_order_id = ? and tpl.order_log_type = 0 and tpl.log_type = 24) temp_tpl on temp.id = temp_tpl.protocol_order_id",
+        "biz.fields": [
+          "protocol_order_id",
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_contract",
+    "desc": "数据同步-订单合同",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_contract",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, case tpc.contract_type when 'PURCHASE' then 0 when 'CARRIER' then 10 when 'AGE_SERPRI' then 20 else 0 end as contract_type, tpc.contract_sn as contract_sn, tpc.contract_url as contract_url, ifnull(UNIX_TIMESTAMP(tpc.create_time), 0) as contract_create_time, ifnull(UNIX_TIMESTAMP(tpc.sign_time), 0) as contract_sign_time, tpc.is_sign as is_sign, tpc.create_time as row_create_time, tpc.create_time as row_update_time from trade_protocol_contract tpc left join trade_protocol_order tpo on tpc.protocol_id = tpo.protocol_id where tpc.contract_id = ?",
+        "biz.fields": [
+          "contract_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_contract"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_goods",
+    "desc": "数据同步-订单商品",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_goods",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      },
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_coal_mine",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpg.goods_id , tpg.goods_name , tpg.goods_type ,(select group_concat(distinct(tgsa.service_type)) from trade_goods_service_attach tgsa where tgsa.goods_id = tpg.goods_id) as goods_service_type, tpg.goods_product_img , tpg.goods_target , tpcm.coal_mine_id as coalmine_id, tpcm.coal_mine_name as coalmine_name, tpcm.coal_mine_nick_name as coalmine_nickname, tpcm.province as province_code, tpcm.province_name , tpcm.city as city_code, tpcm.city_name , tpcm.area as area_code, tpcm.area_name , tpcm.address from trade_protocol_goods tpg , trade_protocol_coal_mine tpcm, trade_protocol_order tpo where tpg.protocol_id = tpo.protocol_id and tpo.protocol_id = tpcm.protocol_id and tpg.protocol_id =?",
+        "biz.fields": [
+          "protocol_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_goods"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_log",
+    "desc": "数据同步-订单日志",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_log",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id,tpl.protocol_order_id as order_id, tpl.content as log_content, tpl.log_type as log_type, tpl.create_company_id as operator_company_id, tpl.create_company_name as operator_company_name, tpl.create_user_id as operator_id, tpl.create_user_name as operator_name, tpl.create_time as row_create_time , tpl.create_time as row_update_time from trade_protocol_log tpl where tpl.order_log_type = 0 and tpl.protocol_log_id =?",
+        "biz.fields": [
+          "protocol_log_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_log"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_logistics-0",
+    "desc": "数据同步-订单物流",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_logistics",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpol.protocol_order_id as order_id, 0 as address_type, tpol.target_address_id as address_id, tpol.target_province as province_code , tpol.target_province_name as province_name, tpol.target_city as city_code, tpol.target_city_name as city_name, tpol.target_area as area_code, tpol.target_area_name as area_name, tpol.target_address as address from trade_protocol_order_logistics tpol where tpol.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_logistics"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_logistics-1",
+    "desc": "数据同步-订单物流",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_logistics",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpol.protocol_order_id as order_id, 1 as address_type, tpol.source_province as province_code , tpol.source_province_name as province_name, tpol.source_city as city_code, tpol.source_city_name as city_name, tpol.source_area as area_code, tpol.source_area_name as area_name, tpol.source_address as address from trade_protocol_order_logistics tpol where tpol.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_logistics"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_negotiate",
+    "desc": "数据同步-订单调价",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_negotiate",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpon.id as id, tpon.protocol_order_id as order_id, tpon.negotiate_status as status, tpon.is_expired, tpon.before_price, tpon.after_price, tpon.before_platform_price, tpon.after_platform_price, ifnull(UNIX_TIMESTAMP(tpon.effective_time), 0) as effective_time, tpon.`version`, case when  (tpon.create_user_id='' or tpon.create_user_id is null) then 0 else tpon.create_user_id end as operator_id, tpon.create_user_name as operator_name, tpon.row_create_time, tpon.row_update_time from trade_protocol_order_negotiate tpon where tpon.id = ?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_negotiate"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_short_url",
+    "desc": "数据同步-短链",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_short_url",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpsu.short_code, tpsu.short_url, tpsu.real_url, tpsu.is_delete as is_deleted, tpsu.creat_time as row_create_time, tpsu.creat_time as row_update_time from trade_protocol_short_url tpsu where tpsu.id = ?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_short_url"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_snapshot",
+    "desc": "数据同步-订单快照",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_snapshot",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select tpos.id, tpos.protocol_order_id as order_id, tpos.snapshot_version , tpos.freight_price , tpos.tax_rate/10000 as tax_rate, tpos.tax_freight_price as pithead_price, tpos.platform_price , tpos.price as market_price, tpos.discounts_price , ifnull(UNIX_TIMESTAMP(tpos.carrier_contract_create_time), 0) as carrier_contract_create_time, ifnull(UNIX_TIMESTAMP(tpos.carrier_contract_sign_time), 0) as carrier_contract_sign_time, tpos.carrier_contract_sn , tpos.carrier_contract_url , ifnull(UNIX_TIMESTAMP(tpos.purchase_contract_create_time), 0) as purchase_contract_create_time, ifnull(UNIX_TIMESTAMP(tpos.purchase_contract_sign_time), 0) as purchase_contract_sign_time, tpos.purchase_contract_sn , tpos.purchase_contract_url , tpos.row_create_time, tpos.row_create_time from trade_protocol_order_snapshot tpos where tpos.id =?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_snapshot"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_negotiate_audit-1",
+    "desc": "数据同步-订单调价审核",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_negotiate",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpon.id as order_negotiate_id, tpon.bop_audit_type  as `type`, tpon.bop_audit_remarks as remark, tpon.bop_audit_user_id as operator_id, tpon.bop_audit_user_name as operator_name, tpon.bop_audit_time as row_create_time, tpon.row_update_time as row_update_time, 'platfrom' as audit_type from trade_protocol_order_negotiate tpon where tpon.id =?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_negotiate_audit"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_negotiate_audit-2",
+    "desc": "数据同步-订单调价审核",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_negotiate",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpon.id as order_negotiate_id, tpon.down_confirm_remarks as remark, tpon.down_confirm_user_id as operator_id, tpon.down_confirm_user_name as operator_name, tpon.down_confirm_time as row_create_time, tpon.row_update_time as row_update_time, 'purchase' as audit_type from trade_protocol_order_negotiate tpon where tpon.id = ?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_negotiate_audit"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_transport_agent",
+    "desc": "数据同步-订单运力经纪人",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "mls_order_agent_config",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id,moac.transport_agent_id, moac.transport_agent_code, tpo.protocol_order_id  as order_id, tpo.protocol_order_sn as order_sn, moac.bill_amount, moac.bill_amount_remain_rate , moac.info_amount, moac.info_amount_remain_rate , moac.operator_id, moac.operator_name , moac.is_deleted, moac.row_create_time , moac.row_update_time from mls_order_agent_config moac left join trade_protocol_order tpo on moac.protocol_order_sn = tpo.protocol_order_sn where moac.id =?",
+        "biz.fields": [
+          "id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_transport_agent"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-1",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.freight_price as price, tp.fin_company_id  as company_id, tp.fin_company_name as company_name, 'CARRIER' as company_type, 'FREIGHT' as price_code, '运费(不含税)' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-2",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.tax_freight_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'CARRIER' as company_type, 'TAX_FREIGHT' as price_code, '运费(含税)' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id =?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-3",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.tax_unit_price as price, tp.supplier_company_id as company_id, tp.supplier_company_name as company_name, 'SUPPLIER' as company_type, 'TAX_UNIT_PRICE' as price_code, '坑口含税价' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-4",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'MARKET_PRICE' as price_code, '含税价(市场价)' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-5",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.fix_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'FIN_PRICE' as price_code, '一口价' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-6",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_fee",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_service_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_SERVICE_PRICE' as price_code, '平台服务费' as price_name from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-7",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.discounts_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'DISCOUNTS_PRICE' as price_code, '含税价(优惠价)' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-8",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpo.service_charge as price, tp.broker_company_id as company_id, tp.broker_company_name as company_name, 'BROKER' as company_type, 'SERVICE_CHARGE' as price_code, '经纪人代发服务费' as price_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_price-9",
+    "desc": "数据同步-订单价格",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_fee",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tpof.platform_price as price, tp.fin_company_id as company_id, tp.fin_company_name as company_name, 'FIN' as company_type, 'PLATFORM_PRICE' as price_code, '平台含税价' as price_name from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_price"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_business-1",
+    "desc": "数据同步-订单业务",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id,tpo.protocol_order_id as order_id, tp.fin_company_id as buyer_company_id, tp.fin_company_name as buyer_company_name, 'FIN' as buyer_company_type, tp.supplier_company_id as seller_company_id, tp.supplier_company_name as seller_company_name, 'SUPPLIER' as seller_company_type, tp.supplier_user_id as seller_user_id, tp.supplier_user_name as seller_user_name, tp.supplier_user_phone as seller_user_phone, tpo.tax_unit_price as price , 1 as business_module from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_business"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_business-3",
+    "desc": "数据同步-订单业务",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_fee",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpof.protocol_order_id as order_id, tp.order_company_id as buyer_company_id, tp.order_company_name as buyer_company_name, 'PURCHASE' as buyer_company_type, tp.order_user_id as buyer_user_id, tp.order_user_name as buyer_user_name, tp.order_user_phone as buyer_user_phone, tp.fin_company_id as seller_company_id, tp.fin_company_name as seller_company_name, 'FIN' as seller_company_type, tpof.platform_price as price , 0 as business_module from trade_protocol tp left join trade_protocol_order tpo on tpo.protocol_id = tp.protocol_id left join trade_protocol_order_fee tpof on tpof.protocol_order_id =tpo.protocol_order_id where tpof.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_business"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_relation",
+    "desc": "数据同步-订单业务",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpo.protocol_order_id as order_id, tp.fin_company_id as fin_company_id, tp.fin_company_name as fin_company_name, tp.order_company_id as purchase_company_id, tp.order_company_name as purchase_company_name, tp.supplier_company_id as supplier_company_id, tp.supplier_company_name as supplier_company_name, tp.broker_company_id as up_agent_company_id, tp.broker_company_name as up_agent_company_name from trade_protocol tp , trade_protocol_order tpo where tpo.protocol_id = tp.protocol_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_relation"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_business_extension-1",
+    "desc": "数据同步-订单业务",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpol.protocol_order_id as order_id, tp.broker_company_id as service_company_id, tp.broker_company_name as service_company_name, tp.broker_user_id as service_user_id, tp.broker_user_name as service_user_name, tp.broker_user_phone as service_user_phone, \"BROKER\" as service_company_type, 1 as business_module from trade_protocol tp , trade_protocol_order tpo, trade_protocol_order_logistics tpol where tpo.protocol_id = tp.protocol_id and tpol.protocol_order_id =tpo.protocol_order_id and tpo.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_business_extension"
+        }
+      }
+    ]
+  },
+  {
+    "id": "mls_order_business_extension-2",
+    "desc": "数据同步-订单业务",
+    "monitor": [
+      {
+        "schema": "renewscc_dev",
+        "table": "trade_protocol_order_logistics",
+        "event": [
+          "insert",
+          "update"
+        ],
+        "field": []
+      }
+    ],
+    "fetcher": {
+      "name": "com.wyyt.databus.fetcher.JdbcFetcher",
+      "desc": "从mysql获取数据",
+      "params": {
+        "driverClassName": "com.mysql.jdbc.Driver",
+        "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+        "username": "zyc",
+        "password": "XNtyEFrgMwR5DYtBEjBG",
+        "biz.sql": "select UUID_SHORT() as id, tpol.protocol_order_id as order_id, tpol.carrier_id as service_company_id, tpol.carrier_name as service_company_name, 0 as service_user_id, tpol.carrier_contacts as service_user_name, tpol.carrier_phone as service_user_phone, \"CARRIER\" as service_company_type, 0 as business_module from trade_protocol_order_logistics tpol where tpol.protocol_order_id = ?",
+        "biz.fields": [
+          "protocol_order_id"
+        ]
+      }
+    },
+    "processor": [
+      {
+        "name": "com.wyyt.databus.processor.JdbcProcessor",
+        "desc": "向mysql表写数据",
+        "params": {
+          "driverClassName": "com.mysql.jdbc.Driver",
+          "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/wyw_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
+          "username": "zyc",
+          "password": "XNtyEFrgMwR5DYtBEjBG",
+          "biz.table": "mls_order_business_extension"
+        }
+      }
+    ]
+  }
+]
