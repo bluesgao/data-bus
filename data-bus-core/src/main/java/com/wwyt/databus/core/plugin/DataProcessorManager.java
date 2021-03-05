@@ -12,6 +12,7 @@ public class DataProcessorManager {
     private static ConcurrentHashMap<String, DataProcessor> registeredProcessors = new ConcurrentHashMap<>(16);
 
     static {
+        registeredProcessors.clear();
         load();
         System.out.println("DataProcessorManager load initialized");
     }

@@ -12,6 +12,7 @@ public class DataFetcherManager {
     private static ConcurrentHashMap<String, DataFetcher> registeredFetchers = new ConcurrentHashMap<>(16);
 
     static {
+        registeredFetchers.clear();
         load();
         System.out.println("DataFetcherManager load initialized");
     }
