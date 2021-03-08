@@ -231,7 +231,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select mwsd.id as id, mwsd.daily_bill_sn as statement_sn, mwsd.scp_company_id as buyer_company_id, mwsd.scp_company_name as buyer_company_name, mwsd.up_agent_id as seller_company_id, mwsd.up_agent_name as seller_company_name, mwsd.check_status as status, mwsd.waybill_count, mwsd.waybill_exception_count, mwsd.send_count as send_qty, mwsd.supplier_receivable_amount *10000 as payable_amount, mwsd.row_create_time , mwsd.row_update_time from mls_waybill_settle_daily mwsd where mwsd.id =?",
+        "biz.sql": "select mwsd.id as id, mwsd.daily_bill_sn as main_statement_sn,mwsd.daily_bill_sn as statement_sn, mwsd.scp_company_id as buyer_company_id, mwsd.scp_company_name as buyer_company_name, mwsd.up_agent_id as seller_company_id, mwsd.up_agent_name as seller_company_name, mwsd.check_status as status, mwsd.waybill_count, mwsd.waybill_exception_count  as exception_waybill_count, mwsd.send_count as send_qty, mwsd.supplier_receivable_amount *10000 as payable_amount, mwsd.row_create_time , mwsd.row_update_time from mls_waybill_settle_daily mwsd where mwsd.id =?",
         "biz.fields": [
           "id"
         ]
@@ -273,7 +273,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select mwsdr.id as id, mwsdr.daily_statement_id as statement_id, mws.adjusted_protocol_price as detail_price, mws.adjusted_goods_deduction_amount as goods_deduction_amount, mws.payable_goods_amount as payable_amount, mws.row_create_time , mws.row_update_time from mls_waybill_settle_daily_rel mwsdr , mls_waybill_settle mws where mwsdr.waybill_id = mws.waybill_id and mwsdr.id =?",
+        "biz.sql": "select mwsdr.id as id, mwsd.daily_bill_sn as main_statement_sn, mwsdr.daily_statement_id as statement_id, mwsdr.waybill_id as waybill_id, mws.adjusted_protocol_price as detail_price, mws.adjusted_goods_deduction_amount as goods_deduction_amount, mws.payable_goods_amount as payable_amount, mws.row_create_time , mws.row_update_time from mls_waybill_settle_daily_rel mwsdr , mls_waybill_settle_daily mwsd, mls_waybill_settle mws where mwsdr.waybill_id = mws.waybill_id and mwsd.id =mwsdr.daily_statement_id and mwsdr.id = ?",
         "biz.fields": [
           "id"
         ]
