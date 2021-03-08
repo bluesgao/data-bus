@@ -317,7 +317,7 @@
         "password": "XNtyEFrgMwR5DYtBEjBG",
         "biz.sql": "select UUID_SHORT() as id, mwsm.month_bill_sn as main_statement_sn, mwsd.down_bill_sn as statement_sn, mwsm.scp_company_id as seller_company_id, mwsm.scp_company_name as seller_company_name, mwsd.purchase_company_id as buyer_company_id, mwsd.purchase_company_name as buyer_company_name, mwsd.check_status as status, mwsd.waybill_count as waybill_count, 0 as exception_waybill_count, mwsd.send_count as send_qty, mwsd.receive_count as receive_qty, mwsd.goods_deduction_amount as goods_deduction_amount, mwsd.freight_deduction_amount as freight_deduction_amount, mwsd.pur_payable_goods_amount + mwsd.pur_paid_freight_amount as payable_amount, mwsd.pur_payable_goods_amount as payable_goods_amount, mwsd.settle_url as statement_url, mwsd.settle_file_size as statement_file_size, mwsd.settle_detail_url as settle_detail_url, mwsd.settle_detail_file_size as settle_detail_file_size, mwsd.create_user_id as operator_id, mwsd.create_user_name as operator_name, mwsd.row_create_time , mwsd.row_update_time from mls_waybill_settle_month mwsm left join mls_waybill_settle_down mwsd on mwsm.month_bill_sn = mwsd.month_bill_sn where mwsd.down_bill_sn = ?",
         "biz.fields": [
-          "id"
+          "down_bill_sn"
         ]
       }
     },
@@ -357,7 +357,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, mwsd.down_bill_sn as statement_sn, mwsdr.waybill_id as waybill_id, mws.adjusted_platform_price as detail_goods_price, mws.adjusted_goods_deduction_amount as goods_deduction_amount, mws.freight_deduction_amount  as freight_deduction_amount, mws.receivable_goods_amount+ mws.receivable_freight_amount as payable_amount, mws.receivable_goods_amount as payable_goods_amount, mws.row_create_time , mws.row_update_time from mls_waybill_settle_month mwsm left join mls_waybill_settle_down mwsd on mwsm.month_bill_sn = mwsd.month_bill_sn left join mls_waybill_settle_down_rel mwsdr on mwsd.id =mwsdr.down_statement_id left join mls_waybill_settle mws on mwsdr.waybill_id =mws.waybill_id where mwsdr.id = ?",
+        "biz.sql": "select UUID_SHORT() as id, mwsm.month_bill_sn as main_statement_sn, mwsd.down_bill_sn as statement_sn, mwsdr.waybill_id as waybill_id, mws.adjusted_platform_price as detail_goods_price, mws.adjusted_goods_deduction_amount as goods_deduction_amount, mws.freight_deduction_amount  as freight_deduction_amount, mws.receivable_goods_amount+ mws.receivable_freight_amount as payable_amount, mws.receivable_goods_amount as payable_goods_amount, mws.row_create_time , mws.row_update_time from mls_waybill_settle_month mwsm left join mls_waybill_settle_down mwsd on mwsm.month_bill_sn = mwsd.month_bill_sn left join mls_waybill_settle_down_rel mwsdr on mwsd.id =mwsdr.down_statement_id left join mls_waybill_settle mws on mwsdr.waybill_id =mws.waybill_id where mwsdr.id = ?",
         "biz.fields": [
           "id"
         ]
