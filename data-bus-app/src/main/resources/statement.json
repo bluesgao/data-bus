@@ -147,7 +147,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, mwsdr.daily_statement_id as statement_id, mwsdr.waybill_id as waybill_id, mwsdr.sjb_id as waybill_sn, tpow.send_count as send_qty, tpow.receive_count as receive_qty, mwsdr.row_create_time , mwsdr.row_update_time from mls_waybill_settle_daily_rel mwsdr , trade_protocol_order_waybill tpow where mwsdr.waybill_id=tpow.order_waybill_id and  mwsdr.waybill_id =?",
+        "biz.sql": "select UUID_SHORT() as id, mwsd.daily_bill_sn as statement_sn, mwsdr.waybill_id as waybill_id, mwsdr.sjb_id as waybill_sn, tpow.send_count as send_qty, tpow.receive_count as receive_qty, mwsdr.row_create_time , mwsdr.row_update_time from mls_waybill_settle_daily_rel mwsdr , mls_waybill_settle_daily mwsd , trade_protocol_order_waybill tpow where mwsd.id =mwsdr.daily_statement_id and mwsdr.waybill_id=tpow.order_waybill_id and  mwsdr.waybill_id =?",
         "biz.fields": [
           "waybill_id"
         ]
@@ -189,7 +189,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, mwsmr.month_statement_id as statement_id, mwsmr.waybill_id as waybill_id, mwsmr.sjb_id as waybill_sn, tpow.send_count as send_qty, tpow.receive_count as receive_qty, mwsmr.row_create_time , mwsmr.row_update_time from mls_waybill_settle_month_rel mwsmr, trade_protocol_order_waybill tpow where mwsmr.waybill_id=tpow.order_waybill_id and  mwsmr.waybill_id =?",
+        "biz.sql": "select UUID_SHORT() as id, mwsm.month_bill_sn as statement_sn, mwsmr.waybill_id as waybill_id, mwsmr.sjb_id as waybill_sn, tpow.send_count as send_qty, tpow.receive_count as receive_qty, mwsmr.row_create_time , mwsmr.row_update_time from mls_waybill_settle_month_rel mwsmr, mls_waybill_settle_month mwsm , trade_protocol_order_waybill tpow where mwsmr.waybill_id=tpow.order_waybill_id and mwsm.id =mwsmr.month_statement_id and  mwsmr.waybill_id =?",
         "biz.fields": [
           "waybill_id"
         ]
