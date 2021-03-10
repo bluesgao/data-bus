@@ -21,7 +21,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpow.order_waybill_id as id, tpow.sjb_id as waybill_sn, tpow.protocol_order_id as order_id, tpow.protocol_order_sn as order_sn, tpow.status as status , tpow.verify_status as up_status, tpow.purchase_status as down_status, tpow.delivery_pay_type as down_pay_type, tpo.payment_path as up_pay_type, tpo.down_business_type as down_pay_type, tpow.formula_type as formula_type, tpg.goods_id as goods_id, tpow.goods_name as goods_name , ifnull(tgb.coalmine_id, 0) as coalmine_id, tpow.coalmine_name as coalmine_name , tpow.plate_number , tpow.driver_code , tpow.driver_name, tpow.driver_phone, tpow.source_address, tpow.target_address, ifnull(UNIX_TIMESTAMP(tpow.sjb_send_time), 0)  as send_time, ifnull(UNIX_TIMESTAMP(tpow.source_sign_time), 0)  as source_time, ifnull(UNIX_TIMESTAMP(tpow.target_sign_time), 0)  as target_time, tpow.offline_flag as waybill_source, tpow.snapshot_version , tpow.create_time as row_create_time, tpow.create_time as row_update_time, tpow.tax_rate as tax_rate from trade_protocol_order_waybill tpow left join trade_protocol_order tpo on tpow.protocol_order_id = tpo.protocol_order_id left join trade_protocol_goods tpg on tpow.protocol_id = tpg.protocol_id left join trade_goods_base tgb on tgb.goods_id = tpg.goods_id where tpow.order_waybill_id = ?",
+        "biz.sql": "select tpow.order_waybill_id as id, tpow.sjb_id as waybill_sn, tpow.protocol_order_id as order_id, tpow.protocol_order_sn as order_sn, tpow.status as status , tpow.verify_status as up_status, tpow.purchase_status as down_status, tpow.delivery_pay_type as delivery_pay_type, tpo.payment_path as up_pay_type, tpo.down_business_type as down_pay_type, tpow.formula_type as formula_type, tpg.goods_id as goods_id, tpow.goods_name as goods_name , ifnull(tgb.coalmine_id, 0) as coalmine_id, tpow.coalmine_name as coalmine_name , tpow.plate_number , tpow.driver_code , tpow.driver_name, tpow.driver_phone, tpow.source_address, tpow.target_address, ifnull(UNIX_TIMESTAMP(tpow.sjb_send_time), 0)  as send_time, ifnull(UNIX_TIMESTAMP(tpow.source_sign_time), 0)  as source_time, ifnull(UNIX_TIMESTAMP(tpow.target_sign_time), 0)  as target_time, tpow.offline_flag as waybill_source, tpow.snapshot_version , tpow.create_time as row_create_time, tpow.create_time as row_update_time, tpow.tax_rate as tax_rate, tpow.goods_count as goods_qty, tpow.source_address as source_address_nickname, tpow.target_address as target_address_nickname from trade_protocol_order_waybill tpow left join trade_protocol_order tpo on tpow.protocol_order_id = tpo.protocol_order_id left join trade_protocol_goods tpg on tpow.protocol_id = tpg.protocol_id left join trade_goods_base tgb on tgb.goods_id = tpg.goods_id where tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -105,7 +105,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id,tpow.order_waybill_id as waybill_id, 0 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, tpow.purchase_status as status, twv.force_sign_remark, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.create_user_id as operator_id, twv.update_user_id as operator_name, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'PURCHASE' and twv.waybill_no = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, tpow.purchase_status as status, twv.force_sign_remark, tp.order_company_id as operator_company_id, tp.order_company_name as operator_company_name, tp.order_user_id as operator_id, tp.order_user_name as operator_name, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_protocol tp where tpow.sjb_id = twv.waybill_no and tp.protocol_id =tpow.protocol_id and twv.company_type = 'PURCHASE' and twv.waybill_no =?",
         "biz.fields": [
           "waybill_no"
         ]
@@ -189,7 +189,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 1 as business_module, tpow.verify_status as status, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and twv.waybill_no =?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, tpow.purchase_status as status, twv.force_sign_remark, tp.order_company_id as operator_company_id, tp.order_company_name as operator_company_name, tp.order_user_id as operator_id, tp.order_user_name as operator_name, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv, trade_protocol tp where tpow.sjb_id = twv.waybill_no and tp.protocol_id =tpow.protocol_id and twv.company_type = 'PURCHASE' and twv.waybill_no =?",
         "biz.fields": [
           "waybill_no"
         ]
@@ -231,7 +231,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpow.order_waybill_id as id, twv.tool_number, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and tpow.order_waybill_id = ?",
+        "biz.sql": " select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, twv.tool_number, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'BROKER' and tpow.order_waybill_id =?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -273,7 +273,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select tpow.order_waybill_id as id, twv.goods_deduction_amount as coal_deduction_amount, twv.coal_deduction_reason as coal_deduction_type, twv.coal_remark as coal_deduction_remark, tpow.coal_duct_status as coal_deduction_status, twv.freight_deduction_amount as freight_deduction_amount, twv.deduction_reason as freight_deduction_type, twv.remark as freight_deduction_remark, tpow.freight_duct_status as freight_deduction_status, twv.rule_name as rule_name, twv.logistics_rule_code as formula_code, twv.formula_code as formula_name, twv.constant_param_json as constant_param_json, twv.variate_param_json as variate_param_json, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'PURCHASE' and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, twv.goods_deduction_amount as coal_deduction_amount, twv.coal_deduction_reason as coal_deduction_type, twv.coal_remark as coal_deduction_remark, tpow.coal_duct_status as coal_deduction_status, twv.freight_deduction_amount as freight_deduction_amount, twv.deduction_reason as freight_deduction_type, twv.remark as freight_deduction_remark, tpow.freight_duct_status as freight_deduction_status, twv.rule_name as rule_name, twv.logistics_rule_code as formula_code, twv.formula_code as formula_name, twv.constant_param_json as constant_param_json, twv.variate_param_json as variate_param_json, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'PURCHASE' and tpow.order_waybill_id =?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -693,7 +693,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tpol.carrier_id as company_id, tpol.carrier_name as company_name, tpow.sjb_order_real_price as amount, 'SJB_ORDER_REAL_PRICE' as amount_code, '实付司机金额' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol_order_logistics tpol where tpol.protocol_order_id = tpow.protocol_order_id and tpow.order_waybill_id=?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tpol.carrier_id as company_id, tpol.carrier_name as company_name, tpow.sjb_order_real_price as amount, 'SJB_ORDER_REAL_AMOUNT' as amount_code, '实付司机金额' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol_order_logistics tpol where tpol.protocol_order_id = tpow.protocol_order_id and tpow.order_waybill_id=?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -735,7 +735,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tpol.carrier_id as company_id, tpol.carrier_name as company_name, tpow.schdule_fee*10000 as amount, 'SCHDULE_FEE' as amount_code, '调度费' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol_order_logistics tpol where tpol.protocol_order_id = tpow.protocol_order_id and tpow.order_waybill_id =?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tpol.carrier_id as company_id, tpol.carrier_name as company_name, tpow.schdule_fee*10000 as amount, 'SCHDULE_FEE_AMOUNT' as amount_code, '调度费' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol_order_logistics tpol where tpol.protocol_order_id = tpow.protocol_order_id and tpow.order_waybill_id =?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -777,7 +777,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_name as company_name, tpow.frozen_price *10000 as amount, 'FROZEN_PRICE' as amount_code, '冻结金额' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, tp.order_company_id as company_id, tp.order_company_name as company_name, tpow.frozen_price *10000 as amount, 'FROZEN_AMOUNT' as amount_code, '冻结金额' as amount_name, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
