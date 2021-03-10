@@ -147,7 +147,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id,tpow.order_waybill_id as waybill_id, 2 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, ifnull(UNIX_TIMESTAMP(tpow.sign_over_time), 0)  as sign_over_time, tpow.status as status, tpow.sign_flag as is_force_sign, twv.force_sign_remark, twv.company_id as operator_company_id, twv.company_name as operator_company_name, twv.update_user_id as operator_id, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'FIN' and twv.waybill_no = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 2 as business_module, twv.real_send_num as send_goods_qty, twv.receive_qty as receipts_goods_qty, ifnull(UNIX_TIMESTAMP(tpow.sign_time), 0)  as sign_time, ifnull(UNIX_TIMESTAMP(tpow.sign_over_time), 0)  as sign_over_time, tpow.status as status, tpow.sign_flag as is_force_sign, twv.create_time as row_create_time, twv.update_time as row_update_time from trade_protocol_order_waybill tpow , trade_waybill_verify twv where tpow.sjb_id = twv.waybill_no and twv.company_type = 'FIN' and twv.waybill_no =?",
         "biz.fields": [
           "waybill_no"
         ]
