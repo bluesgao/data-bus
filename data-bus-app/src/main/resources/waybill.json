@@ -987,7 +987,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 1 as business_module, 50 as business_type, tp.fin_company_id as payer_company_id, tp.fin_company_name as payer_company_name, tp.broker_company_id as payee_company_id, tp.broker_company_name as payee_company_name, tpow.payable_service_charge_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 1 as business_module, 50 as business_type, tp.fin_company_id as payer_company_id, tp.fin_company_name as payer_company_name, IF(ISNULL(tp.broker_company_id) OR tp.broker_company_id='',0,tp.broker_company_id) as payee_company_id, IF(ISNULL(tp.broker_company_name) OR tp.broker_company_name='','',tp.broker_company_name) as payee_company_name, tpow.payable_service_charge_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and (tp.broker_company_id is not null or tp.broker_company_name is not null) and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
