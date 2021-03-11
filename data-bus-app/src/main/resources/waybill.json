@@ -819,7 +819,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 10 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_goods_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 10 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_goods_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.payment_fix_amount=0 and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -861,7 +861,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 20 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_freight_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 20 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_freight_amount as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.payment_fix_amount=0 and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
@@ -903,7 +903,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 0 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_fix_amount  as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.order_waybill_id = ?",
+        "biz.sql": "select UUID_SHORT() as id, tpow.order_waybill_id as waybill_id, 0 as business_module, 0 as business_type, tp.order_company_id as payer_company_id, tp.order_company_name as payer_company_name, tp.fin_company_id as payee_company_id, tp.fin_company_name as payee_company_name, tpow.payment_fix_amount  as payable_amount, tpow.create_time as row_create_time, tpow.create_time as row_update_time from trade_protocol_order_waybill tpow , trade_protocol tp where tp.protocol_id = tpow.protocol_id and tpow.payment_fix_amount>0 and tpow.order_waybill_id = ?",
         "biz.fields": [
           "order_waybill_id"
         ]
