@@ -441,7 +441,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select UUID_SHORT() as id, mwsm.month_bill_sn as main_statement_sn, mwsm.month_bill_sn as statement_sn, mwsm.scp_company_id as buyer_company_id, mwsm.scp_company_name as buyer_company_name, mwsm.supplier_company_id as seller_company_id, mwsm.supplier_company_name as seller_company_name, mwsm.waybill_count, 0 as exception_waybill_count, mwsm.send_count as send_qty, mwsm.goods_deduction_amount , mwsm.supplier_receivable_amount as payable_amount, mwsm.create_user_id as operator_id, mwsm.create_user_name as operator_name, mwsm.row_create_time , mwsm.row_update_time from mls_waybill_settle_month mwsm where mwsm.id =?",
+        "biz.sql": "select UUID_SHORT() as id, mwsm.month_bill_sn as main_statement_sn, mwsm.month_bill_sn as statement_sn, mwsdr.waybill_id as waybill_id, mws.adjusted_protocol_price as detail_price, mws.adjusted_goods_deduction_amount as goods_deduction_amount, mws.payable_goods_amount as payable_amount, mws.row_create_time , mws.row_update_time from mls_waybill_settle_month mwsm left join mls_waybill_settle_down mwsd on mwsm.month_bill_sn = mwsd.month_bill_sn left join mls_waybill_settle_down_rel mwsdr on mwsd.id =mwsdr.down_statement_id left join mls_waybill_settle mws on mwsdr.waybill_id =mws.waybill_id where mwsdr.id =?",
         "biz.fields": [
           "id"
         ]
