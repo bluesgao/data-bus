@@ -21,7 +21,7 @@
         "url": "jdbc:mysql://gyl.mysql.dev.wyyt:6612/renewscc_dev?tinyInt1isBit=false&transformedBitIsBoolean=false&serverTimezone=Asia/Shanghai",
         "username": "zyc",
         "password": "XNtyEFrgMwR5DYtBEjBG",
-        "biz.sql": "select mws.waybill_id as id, mws.sjb_id as waybill_sn, mws.protocol_order_id as order_id, mws.protocol_order_sn as order_sn,case mws.daily_account_status when 0 then 0 when 1 then 1 when 2 then 1 else 0 end as is_day, case mws.month_account_status when 0 then 0 when 1 then 1 when 2 then 1 else 0 end as is_month, mws.create_user_id as operator_id, mws.create_user_name as operator_name, mws.row_create_time , mws.row_update_time from mls_waybill_settle mws where mws.waybill_id =?",
+        "biz.sql": "select mws.waybill_id as id, mws.sjb_id as waybill_sn, mws.waybill_id as waybill_id, mws.protocol_order_id as order_id, mws.protocol_order_sn as order_sn,case mws.daily_account_status when 0 then 0 when 1 then 1 when 2 then 1 else 0 end as is_day, case mws.month_account_status when 0 then 0 when 1 then 1 when 2 then 1 else 0 end as is_month, mws.create_user_id as operator_id, mws.create_user_name as operator_name, mws.row_create_time , mws.row_update_time from mls_waybill_settle mws where mws.waybill_id =?",
         "biz.fields": [
           "waybill_id"
         ]
