@@ -20,7 +20,7 @@ for i in "$APP_HOME"/lib/*.jar; do
 done
 
 JAVA_OPTS=" -Djava.awt.headless=true "
-JAVA_MEM_OPTS=" -server -Xmx1g -Xms1g -Xmn128m"
+JAVA_MEM_OPTS=" -server -Xmx4g -Xms4g -Xmn2g -XX:+UseConcMarkSweepGC"
 
 psid=0
 
